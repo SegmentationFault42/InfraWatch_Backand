@@ -1,4 +1,10 @@
-### Criar um novo sistema - Sucesso
-DELETE http://localhost:3333/hosts/4aebeb29-b259-449c-a690-05c4354aaff7
-//Content-Type: application/json
+### Criar sistema válido
+### Atualizar parcialmente - nome e descrição
+PATCH http://localhost:3333/hosts/9ae50843-dcbd-4e4b-9394-ee6f399bacc5
+Content-Type: application/json
 
+{
+   "name": "Sistema Teste Atualizado",
+  "description": "Agora o sistema tem uma nova descrição",
+  "timeout": 45
+}

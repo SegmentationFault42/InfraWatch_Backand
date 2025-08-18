@@ -1,8 +1,9 @@
+import { id } from 'zod/locales';
 import { Prisma } from '../../config/database.ts';
 import { System } from '@prisma/client';
 
 class SystemRepository {
-    async verifySystem(
+    async verifySystemIfExists(
         data: Omit<System, 'id' | 'status' | 'created_at' | 'updated_at'>,
     ) {
         return await Prisma.system.findFirst({
@@ -40,6 +41,22 @@ class SystemRepository {
             where: {
                 id,
             },
+        });
+    }
+    async verifySystem(id: string) {
+        return await Prisma.system.findFirst({
+            where: {
+                id,
+            },
+        });
+    }
+
+    async updateSystemById(id: string, data: Partial<System>) {
+        return await Prisma.system.update({
+            where: {
+                id,
+            },
+            data: data,
         });
     }
 }
