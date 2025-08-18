@@ -1,6 +1,6 @@
 export const LoginSchemaSwagger = {
     description: 'Realiza login de um usuário',
-    tags: ['auth'],
+    tags: ['users'],
     body: {
         type: 'object',
         properties: {
