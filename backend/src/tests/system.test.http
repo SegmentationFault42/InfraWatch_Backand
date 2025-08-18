@@ -1,0 +1,4 @@
+### Criar um novo sistema - Sucesso
+DELETE http://localhost:3333/hosts/4aebeb29-b259-449c-a690-05c4354aaff7
+//Content-Type: application/json
+
