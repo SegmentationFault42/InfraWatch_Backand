@@ -1,3 +1,5 @@
+CREATE EXTENSION IF NOT EXISTS timescaledb;
+
 
 CREATE TABLE ping_metrics (
   time TIMESTAMPTZ NOT NULL,

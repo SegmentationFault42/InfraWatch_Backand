@@ -1,9 +1,0 @@
-### Criar usuário
-POST http://localhost:3333/user/login
-Content-Type: application/json
-
-{
-  "email": "lausiowatela@gmail.com.com",
-  "password": "Teste123@"
-  
-}
