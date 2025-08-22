@@ -11,6 +11,7 @@ class SystemValidation {
         alert_email: z.string().email('E-mail inválido'),
         description: z.string(),
         created_by: z.string().uuid('ID do criador inválido'),
+        updated_by: z.string().uuid('ID do criador inválido'),
     });
     getById = z.object({
         id: z.string().uuid(),

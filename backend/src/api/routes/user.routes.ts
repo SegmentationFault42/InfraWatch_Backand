@@ -4,12 +4,11 @@ import {
     CreateUserSwaggerSchema,
     LoginSchemaSwagger,
 } from '../schema/userSchema.ts';
-import { verifyJWT } from '../middleware/verifyJWT.ts';
 
 export async function userRoutes(fastify: FastifyInstance) {
     fastify.post(
         '/user/create',
-        { schema: CreateUserSwaggerSchema, preHandler: verifyJWT},
+        { schema: CreateUserSwaggerSchema },
         userController.createUser,
     );
     fastify.post(

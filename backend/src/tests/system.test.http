@@ -1,10 +1,17 @@
-### Criar sistema válido
-### Atualizar parcialmente - nome e descrição
-PATCH http://localhost:3333/hosts/9ae50843-dcbd-4e4b-9394-ee6f399bacc5
+### Criar novo sistema
+POST http://localhost:3333/hosts/create
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRkZGQ5NGIwLTY2OTAtNGI5Yy04MjhhLWJjOTMyOWRjYjAyMyIsImVtYWlsIjoidGVzdEBlbXByZXNhLmNvbSIsImlhdCI6MTc1NTcxMTk3MSwiZXhwIjoxNzU1NzEyODcxfQ.5jWcv-a21Y6LRLY1DYd1hQyzbdKKt_JdFvsXE8ZyoaY
 
 {
-   "name": "Sistema Teste Atualizado",
-  "description": "Agora o sistema tem uma nova descrição",
-  "timeout": 45
+  "name": "Sistema de Teste",
+  "url": "https://cflip.com",
+  "monitor_type": "http",
+  "check_interval": 60,
+  "timeout": 30,
+  "is_enabled": true,
+  "alert_email": "alewrta@empresa.com",
+  "description": "Sistema para monitoramento de testes",
+  "created_by": "d6365faf-37b4-4eea-b1f7-73932e246969",
+  "updated_by": "d6365faf-37b4-4eea-b1f7-73932e246969"
 }

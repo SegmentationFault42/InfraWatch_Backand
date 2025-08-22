@@ -15,7 +15,7 @@ const passwordSchema = z
 class UserValidation {
     createUserSchema = z.object({
         email: z.string().email({ message: 'E-mail inválido' }),
-        password: passwordSchema,
+        senha: passwordSchema,
         first_name: z.string().max(50, { message: 'Nome muito longo' }),
         last_name: z.string().max(50, { message: 'Sobrenome muito longo' }),
         profile_image_url: z
@@ -27,7 +27,7 @@ class UserValidation {
 
     loginUser = z.object({
         email: z.string().email({ message: 'E-mail inválido' }),
-        password: z.string().nonempty(),
+        senha: z.string().nonempty(),
     });
 }
 

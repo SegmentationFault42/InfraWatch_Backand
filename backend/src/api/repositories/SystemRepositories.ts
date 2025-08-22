@@ -1,27 +1,26 @@
-import { id } from 'zod/locales';
-import { Prisma } from '../../config/database.ts';
-import { System } from '@prisma/client';
+import { prisma } from '../../config/database.ts';
+import { systems } from '@prisma/client';
 
 class SystemRepository {
     async verifySystemIfExists(
-        data: Omit<System, 'id' | 'status' | 'created_at' | 'updated_at'>,
+        data: Omit<systems, 'id' | 'status' | 'created_at' | 'updated_at'>,
     ) {
-        return await Prisma.system.findFirst({
+        return await prisma.systems.findFirst({
             where: {
                 OR: [{ url: data.url }],
             },
         });
     }
     async addSystem(
-        data: Omit<System, 'id' | 'status' | 'created_at' | 'updated_at'>,
+        data: Omit<systems, 'id' | 'status' | 'created_at' | 'updated_at'>,
     ) {
-        return await Prisma.system.create({
+        return await prisma.systems.create({
             data,
         });
     }
 
     async getAllSystems() {
-        return await Prisma.system.findMany({
+        return await prisma.systems.findMany({
             select: {
                 id: true,
                 name: true,
@@ -36,23 +35,31 @@ class SystemRepository {
             },
         });
     }
+    async getSystemBydId(id: string)
+    {
+        return await prisma.systems.findUnique({
+            where: {
+                id
+            }
+        })
+    }
     async deleteSystemById(id: string) {
-        return await Prisma.system.delete({
+        return await prisma.systems.delete({
             where: {
                 id,
             },
         });
     }
     async verifySystem(id: string) {
-        return await Prisma.system.findFirst({
+        return await prisma.systems.findFirst({
             where: {
                 id,
             },
         });
     }
 
-    async updateSystemById(id: string, data: Partial<System>) {
-        return await Prisma.system.update({
+    async updateSystemById(id: string, data: Partial<systems>) {
+        return await prisma.systems.update({
             where: {
                 id,
             },

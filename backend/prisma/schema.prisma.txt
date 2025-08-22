@@ -1,0 +1,102 @@
+model User {
+  id        String      @id @default(uuid())
+  name      String
+  email     String      @unique
+  password  String
+  roleId    String?     
+  role      Role?       @relation(fields: [roleId], references: [id])
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  auditLogs audit_logs[]
+}
+
+model Role {
+  id          String    @id @default(uuid())
+  nome        String
+  description String?
+  users       User[]
+}
+
+model System {
+  id        String       @id @default(uuid())
+  name      String
+  host      String
+  monitors  Monitor[]
+  status    status       @default(unknown)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  slaReports SlaReport[]
+  alerts     alerts[]
+}
+
+model Monitor {
+  id        String      @id @default(uuid())
+  type      MonitorType
+  config    Json
+  interval  Int?
+  systemId  String
+  system    System      @relation(fields: [systemId], references: [id])
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model SlaReport {
+  id          String      @id @default(uuid())
+  systemId    String
+  system      System      @relation(fields: [systemId], references: [id])
+  periodStart DateTime
+  periodEnd   DateTime
+  uptimePct   Float    
+  downtime    Int     
+  incidents   Int      
+  createdAt   DateTime    @default(now())
+}
+
+model alerts {
+  id          String      @id @default(uuid())
+  systemId    String
+  system      System      @relation(fields: [systemId], references: [id])
+  severity    severity
+  status      alert_status @default(pending)
+  title       String 
+  message     String 
+  resolved_at DateTime?
+  created_at  DateTime      @default(now())
+}
+
+model audit_logs {
+  id         String   @id @default(uuid())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id])
+  action     String   
+  object_type String? 
+  object_id  String?
+  details    Json?
+  created_at DateTime @default(now())
+}
+
+enum status {
+  up
+  down
+  warning
+  unknown
+}
+
+enum MonitorType {
+  PING
+  API
+  SNMP
+  WEBHOOK
+}
+
+enum severity {
+  critical
+  warning
+  info
+}
+
+enum alert_status {
+  pending
+  resolved
+  canceled
+}

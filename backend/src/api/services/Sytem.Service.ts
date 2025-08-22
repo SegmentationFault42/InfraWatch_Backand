@@ -1,9 +1,9 @@
 import { systemRepository } from '../repositories/SystemRepositories.ts';
-import { System } from '@prisma/client';
+import { systems } from '@prisma/client';
 
 class SystemService {
     async addSystem(
-        data: Omit<System, 'id' | 'status' | 'created_at' | 'updated_at'>,
+        data: Omit<systems, 'id' | 'status' | 'created_at' | 'updated_at'>,
     ) {
         const SystemExists = await systemRepository.verifySystemIfExists(data);
 
@@ -22,6 +22,14 @@ class SystemService {
         if (!(systems.length > 0)) throw new Error('Nenhum Sistema Cadastrado');
         return systems;
     }
+    async getSystemById(id: string)
+    {
+        const system = await systemRepository.getSystemBydId(id)
+        if (!system)
+            return "Sistema não encontrado!"
+        else
+            return system;
+    }
     async deleteSystemById(id: string) {
         try {
             await systemRepository.deleteSystemById(id);
@@ -30,7 +38,7 @@ class SystemService {
         }
     }
 
-    async updateSystemById(id: string, data: Partial<System>) {
+    async updateSystemById(id: string, data: Partial<systems>) {
         try {
             const system = await systemRepository.verifySystem(id);
             if (!system) return 'Sistema Inexistente';

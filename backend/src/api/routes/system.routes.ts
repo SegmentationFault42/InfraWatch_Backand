@@ -4,28 +4,31 @@ import {
     CreateSystemSwaggerSchema,
     DeleteSystemSwaggerSchema,
     GetAllSystemsSwaggerSchema,
+    GetSystemByIdSwaggerSchema,
     UpdateSystemSwaggerSchema,
 } from '../schema/system.schema.ts';
+import { verifyJWT } from '../middleware/verifyJWT.ts';
 
 export function SystemRoutes(fastify: FastifyInstance) {
     fastify.post(
         '/hosts/create',
-        { schema: CreateSystemSwaggerSchema },
+        { schema: CreateSystemSwaggerSchema, preHandler:verifyJWT },
         systemController.addSystem,
     );
     fastify.get(
         '/hosts',
-        { schema: GetAllSystemsSwaggerSchema },
+        { schema: GetAllSystemsSwaggerSchema, preHandler:verifyJWT },
         systemController.getAllSystems,
     );
+    fastify.get("/hosts/:id", {schema: GetSystemByIdSwaggerSchema, preHandler: verifyJWT}, systemController.getSystemById)
     fastify.delete(
         '/hosts/:id',
-        { schema: DeleteSystemSwaggerSchema },
+        { schema: DeleteSystemSwaggerSchema, preHandler:verifyJWT },
         systemController.deleteSystemById,
     );
     fastify.patch(
         '/hosts/:id',
-        { schema: UpdateSystemSwaggerSchema },
+        { schema: UpdateSystemSwaggerSchema, preHandler:verifyJWT },
         systemController.updateSystemById,
     );
 }

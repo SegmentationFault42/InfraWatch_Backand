@@ -139,6 +139,70 @@ export const GetAllSystemsSwaggerSchema = {
     },
 };
 
+export const GetSystemByIdSwaggerSchema = {
+    description: 'Retorna um sistema monitorado pelo ID',
+    tags: ['systems'],
+    params: {
+        type: 'object',
+        properties: {
+            id: { type: 'string', format: 'uuid', description: 'ID do sistema' },
+        },
+        required: ['id'],
+    },
+    response: {
+        200: {
+            description: 'Sistema retornado com sucesso',
+            type: 'object',
+            properties: {
+                id: { type: 'string', format: 'uuid' },
+                name: { type: 'string' },
+                url: { type: 'string', format: 'uri' },
+                monitor_type: {
+                    type: 'string',
+                    enum: ['http', 'https', 'ping', 'tcp'],
+                },
+                check_interval: { type: 'integer' },
+                timeout: { type: 'integer' },
+                status: { type: 'string' },
+                is_enabled: { type: 'boolean' },
+                alert_email: {
+                    type: 'string',
+                    format: 'email',
+                    nullable: true,
+                },
+                description: { type: 'string', nullable: true },
+            },
+            example: {
+                id: '550e8400-e29b-41d4-a716-446655440000',
+                name: 'Meu sistema',
+                url: 'https://meuservidor.com',
+                monitor_type: 'https',
+                check_interval: 60,
+                timeout: 5,
+                status: 'online',
+                is_enabled: true,
+                alert_email: 'admin@dominio.com',
+                description: 'API principal de produção',
+            },
+        },
+        404: {
+            description: 'Sistema não encontrado',
+            type: 'object',
+            properties: {
+                error: { type: 'string', example: 'Sistema não encontrado.' },
+            },
+        },
+        500: {
+            description: 'Erro interno do servidor',
+            type: 'object',
+            properties: {
+                error: { type: 'string', example: 'Erro interno no servidor.' },
+            },
+        },
+    },
+};
+
+
 export const DeleteSystemSwaggerSchema = {
     description: 'Remove um sistema monitorado pelo ID',
     tags: ['systems'],

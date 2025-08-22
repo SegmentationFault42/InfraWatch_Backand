@@ -1,12 +1,8 @@
 ### Criar usuário
-POST http://localhost:3333/user/create
+POST http://localhost:3333/user/login
 Content-Type: application/json
 
 {
-  "email": "teste@empresa.com",
-  "password": "SenhaSegura123!",
-  "first_name": "João",
-  "last_name": "Silva",
-  "profile_image_url": "https://meuservidor.com/avatar.png",
-  "role": "viewer"
+  "email": "test@empresa.com",
+  "senha": "SenhaSegura123!"
 }

@@ -10,10 +10,12 @@ class UserController {
             await userService.createUser(data);
             res.status(201).send({ message: 'Usuario criado com sucesso' });
         } catch (err: any) {
+            console.log(err.message);
             if (err instanceof z.ZodError) {
                 res.status(400).send({ error: 'Validação falhou' });
-            } else {
-                console.log(err.message);
+            } else if (err.message === err.message)
+                res.status(400).send({ message: err.message });
+            else {
                 res.status(500).send({ error: 'Erro interno no servidor.' });
             }
         }
@@ -22,11 +24,14 @@ class UserController {
     async loginUser(req: FastifyRequest, res: FastifyReply) {
         try {
             const data = userValidation.loginUser.parse(req.body);
-            const TokenOrStatus = await userService.loginUser(
-                data.email,
-                data.password,
-            );
-            res.status(200).send({ TokenOrStatus });
+            const TokenOrStatus = await userService.loginUser(data.email,data.senha,);
+             res.setCookie("token", TokenOrStatus, {
+                httpOnly: true,
+                secure: true, 
+                sameSite: "none",
+                maxAge: 3600, 
+            });
+            res.status(200).send({ message: TokenOrStatus });
         } catch (error: any) {
             if (
                 error.message === 'Usuário Inexistente' ||

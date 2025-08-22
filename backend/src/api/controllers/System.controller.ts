@@ -2,13 +2,25 @@ import { systemService } from '../services/Sytem.Service.ts';
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { z } from 'zod';
 import { systemValidation } from '../validations/system.validation.ts';
-import { System } from '@prisma/client';
+import { systems } from '@prisma/client';
+import { auditLogService } from '../services/AuditLog.Service.ts';
 
 class SystemController {
     async addSystem(req: FastifyRequest, res: FastifyReply) {
         try {
             const data = systemValidation.createSystemSchema.parse(req.body);
-            await systemService.addSystem(data);
+            const system = await systemService.addSystem(data);
+            await auditLogService.logRequest({
+            user_id: req.user?.id ?? null,
+            action: 'CREATE',
+            object_type: 'system',
+            object_id: system.id,
+            details: {
+                body: req.body,
+                url: req.url,
+                method: req.method,
+            },
+        });
             res.status(201).send({ message: 'Sistema adicionado com sucesso' });
         } catch (err: any) {
             if (err instanceof z.ZodError) {
@@ -32,6 +44,22 @@ class SystemController {
         }
     }
 
+    async getSystemById(req: FastifyRequest, res: FastifyReply)
+    {
+        try{
+            const {id} = systemValidation.getById.parse(req.params)
+            const system = systemService.getSystemById(id)
+            res.status(200).send(system)
+        }catch (err: any) {
+            if (err instanceof z.ZodError)
+                return res.status(400).send({ error: 'Validação falhou' });
+            return res.status(500).send({
+                error: 'Erro interno inesperado',
+                message: 'Algo deu errado, tente novamente mais tarde.',
+            });
+        }
+        
+    }
     async deleteSystemById(req: FastifyRequest, res: FastifyReply) {
         try {
             const Param = systemValidation.getById.parse(req.params);
@@ -53,7 +81,7 @@ class SystemController {
             const Body = systemValidation.getByUpdate.parse(req.body);
             const result = await systemService.updateSystemById(
                 Param.id,
-                Body as Partial<System>,
+                Body as Partial<systems>,
             );
             if (result === 'Sistema actualizado')
                 return res

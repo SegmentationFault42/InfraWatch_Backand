@@ -1,13 +1,13 @@
 import { userRepository } from '../repositories/user.repository.ts';
 import * as bcrypt from 'bcrypt';
-import { User } from '@prisma/client';
+import { users } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 import { ENV } from '../../config/dotenv.ts';
 
 class UserService {
     async createUser(
         data: Omit<
-            User,
+            users,
             'id' | 'role' | 'updated_at' | 'created_at' | 'profile_image_url'
         >,
     ) {
@@ -18,8 +18,8 @@ class UserService {
         }
 
         try {
-            const senhaHash = await bcrypt.hash(data.password, 10);
-            data.password = senhaHash;
+            const senhaHash = await bcrypt.hash(data.senha, 10);
+            data.senha = senhaHash;
             return await userRepository.create(data);
         } catch (error) {
             console.log(error);
@@ -29,7 +29,7 @@ class UserService {
     async loginUser(email: string, password: string) {
         const user = await userRepository.loginUser(email);
         if (!user) throw new Error('Usuário Inexistente');
-        const senhaValida = await bcrypt.compare(password, user.password);
+        const senhaValida = await bcrypt.compare(password, user.senha);
         if (!senhaValida) {
             throw new Error('Senha inválida');
         }

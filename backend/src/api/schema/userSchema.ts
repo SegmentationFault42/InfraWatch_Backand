@@ -9,9 +9,9 @@ export const LoginSchemaSwagger = {
                 format: 'email',
                 description: 'E-mail do usuário',
             },
-            password: { type: 'string', description: 'Senha do usuário' },
+            senha: { type: 'string', description: 'Senha do usuário' },
         },
-        required: ['email', 'password'],
+        required: ['email', 'senha'],
     },
     response: {
         200: {
@@ -33,7 +33,6 @@ export const LoginSchemaSwagger = {
         },
     },
 };
-
 export const CreateUserSwaggerSchema = {
     description: 'Cria um novo usuário no sistema',
     tags: ['users'],
@@ -41,13 +40,12 @@ export const CreateUserSwaggerSchema = {
         type: 'object',
         properties: {
             email: { type: 'string', format: 'email' },
-            password: { type: 'string' },
+            senha: { type: 'string' },
             first_name: { type: 'string', maxLength: 50 },
             last_name: { type: 'string', maxLength: 50 },
             profile_image_url: {
-                type: 'string',
+                type: ['string', 'null'],
                 format: 'uri',
-                nullable: true,
             },
             role: {
                 type: 'string',
@@ -55,7 +53,7 @@ export const CreateUserSwaggerSchema = {
                 default: 'viewer',
             },
         },
-        required: ['email', 'password', 'first_name', 'last_name'],
+        required: ['email', 'senha', 'first_name', 'last_name'],
     },
     response: {
         201: {
