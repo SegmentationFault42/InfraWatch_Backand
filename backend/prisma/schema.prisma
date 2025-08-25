@@ -22,7 +22,6 @@ model User {
 model Role {
   id          String    @id @default(uuid())
   nome        String
-  description String?
   users       User[]
 }
 

@@ -1,30 +1,22 @@
 import { prisma } from '../../config/database.ts';
-import { users } from '@prisma/client';
+import { User } from '@prisma/client';
 
 class UserRepository {
     async verifyUser(
-        data: Omit<
-            users,
-            'id' | 'role' | 'updated_at' | 'created_at' | 'profile_image_url'
-        >,
+        email: string
     ) {
         return await prisma.users.findFirst({
             where: {
-                OR: [{ email: data.email }],
+                OR: [{ email: email }],
             },
         });
     }
 
-    async create(
-        data: Omit<
-            users,
-            'id' | 'role' | 'updated_at' | 'created_at' | 'profile_image_url'
-        >,
-    ) {
-        return await prisma.users.create({
-            data: data,
-        });
-    }
+    async create(data: Omit<User, 'id' | 'createdAt' | 'updatedAt' | 'auditLogs' | 'role'>) {
+    return await prisma.user.create({
+      data,
+    });
+  }
 
     async loginUser(email: string) {
         return await prisma.users.findUnique({
@@ -32,7 +24,7 @@ class UserRepository {
             select: {
                 id: true,
                 email: true,
-                senha: true,
+                password: true,
             },
         });
     }

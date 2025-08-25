@@ -1,26 +1,27 @@
 import { userRepository } from '../repositories/user.repository.ts';
 import * as bcrypt from 'bcrypt';
-import { users } from '@prisma/client';
+import { User } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 import { ENV } from '../../config/dotenv.ts';
 
 class UserService {
-    async createUser(
-        data: Omit<
-            users,
-            'id' | 'role' | 'updated_at' | 'created_at' | 'profile_image_url'
-        >,
-    ) {
-        const userExists = await userRepository.verifyUser(data);
-
+    async createUser(data: {email: string;senha: string;first_name: string;last_name: string;role?: string;}) {
+        const userExists = await userRepository.verifyUser(data.email);
         if (userExists) {
-            throw new Error('Esses dados já existem.');
+            throw new Error('E-mail já cadastrado.');
         }
 
         try {
             const senhaHash = await bcrypt.hash(data.senha, 10);
-            data.senha = senhaHash;
-            return await userRepository.create(data);
+
+            return await userRepository.create({
+                name: `${data.first_name} ${data.last_name}`,
+                email: data.email,
+                password: senhaHash,
+                role: data.role
+                ? { connect: { nome: data.role } }
+                : undefined,
+            }); 
         } catch (error) {
             console.log(error);
             throw new Error('Falha ao criar usuário.');

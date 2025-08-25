@@ -22,7 +22,7 @@ class UserValidation {
             .string()
             .url({ message: 'URL inválida' })
             .optional(),
-        role: RoleEnum.default('viewer'),
+        role: z.enum(['admin', 'editor', 'viewer']),
     });
 
     loginUser = z.object({
