@@ -32,10 +32,12 @@ model System {
   host      String
   monitors  Monitor[]
   status    status       @default(unknown)
+  alert_email String?
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
   slaReports SlaReport[]
   alerts     alerts[]
+  SLAConfig SLAConfig[]
 }
 
 model Monitor {
@@ -47,6 +49,18 @@ model Monitor {
   system    System      @relation(fields: [systemId], references: [id])
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
+}
+
+model SLAConfig {
+  id                String   @id @default(uuid())
+  systemId          String
+  system            System   @relation(fields: [systemId], references: [id])
+  uptimeTarget      Float    // ex.: 99.9 (%)
+  maxDowntime       Int?     // em minutos
+  responseTimeTarget Int?    // em ms
+  monitoringWindow  String?  // ex.: "monthly", "quarterly"
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 }
 
 model SlaReport {

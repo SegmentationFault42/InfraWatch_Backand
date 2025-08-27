@@ -1,64 +1,74 @@
 import { prisma } from '../../config/database.ts';
-import { systems } from '@prisma/client';
+import { System } from '@prisma/client';
 
 class SystemRepository {
     async verifySystemIfExists(
-        data: Omit<systems, 'id' | 'status' | 'created_at' | 'updated_at'>,
+        data: Omit<System, 'id' | 'status' | 'created_at' | 'updated_at'>,
     ) {
-        return await prisma.systems.findFirst({
+        return await prisma.system.findFirst({
             where: {
-                OR: [{ url: data.url }],
+                OR: [{ host: data.host }],
             },
         });
     }
     async addSystem(
-        data: Omit<systems, 'id' | 'status' | 'created_at' | 'updated_at'>,
+        data: Omit<System, 'id' | 'status' | 'created_at' | 'updated_at'>,
     ) {
-        return await prisma.systems.create({
-            data,
+        return await prisma.system.create({
+            data: {
+                name: data.name,
+                host: data.host,
+                alert_email: data.alert_email,
+                monitors: create{
+
+                },
+            }
         });
     }
 
     async getAllSystems() {
-        return await prisma.systems.findMany({
+        return await prisma.system.findMany({
             select: {
                 id: true,
                 name: true,
-                url: true,
-                monitor_type: true,
-                check_interval: true,
-                timeout: true,
+                host: true,
+                monitors: {
+                    select: {
+                        id: true,
+                        type: true,
+                        config: true,
+                        interval: true,
+                    }
+                },
                 status: true,
-                is_enabled: true,
                 alert_email: true,
-                description: true,
             },
         });
     }
     async getSystemBydId(id: string) {
-        return await prisma.systems.findUnique({
+        return await prisma.system.findUnique({
             where: {
                 id,
             },
         });
     }
     async deleteSystemById(id: string) {
-        return await prisma.systems.delete({
+        return await prisma.system.delete({
             where: {
                 id,
             },
         });
     }
     async verifySystem(id: string) {
-        return await prisma.systems.findFirst({
+        return await prisma.system.findFirst({
             where: {
                 id,
             },
         });
     }
 
-    async updateSystemById(id: string, data: Partial<systems>) {
-        return await prisma.systems.update({
+    async updateSystemById(id: string, data: Partial<System>) {
+        return await prisma.system.update({
             where: {
                 id,
             },
