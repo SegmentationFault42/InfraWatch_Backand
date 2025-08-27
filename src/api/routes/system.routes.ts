@@ -10,10 +10,9 @@ import {
 import { verifyJWT } from '../middleware/verifyJWT.ts';
 
 export function SystemRoutes(fastify: FastifyInstance) {
-    fastify.post(
-        '/hosts/create',
-        { schema: CreateSystemSwaggerSchema, preHandler: verifyJWT },
-        systemController.addSystem,
+    fastify.post('/hosts/create',{ schema: CreateSystemSwaggerSchema, /*preHandler: verifyJWT*/ },(req, res)=>{
+        systemController.addSystem(req, res)
+    }
     );
     fastify.get(
         '/hosts',

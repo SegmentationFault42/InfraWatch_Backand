@@ -1,30 +1,37 @@
 import { z } from 'zod';
 
+const monitorInputSchema = z.object({
+    type: z.enum(["API", "PING", "SNMP", "WEBHOOK"]),
+    config: z.any(),
+    interval: z.number().int().positive().optional()
+});
+
+const slaConfigInputSchema = z.object({
+    uptimeTarget: z.number().min(0).max(100),
+    maxDowntime: z.number().int().nonnegative().optional(),
+    responseTimeTarget: z.number().int().positive().optional(),
+    monitoringWindow: z.string().optional()
+});
+
 class SystemValidation {
     createSystemSchema = z.object({
-        name: z.string().min(1, 'Nome é obrigatório'),
-        url: z.string().url('URL inválida'),
-        monitor_type: z.enum(['http', 'https', 'ping', 'tcp']),
-        check_interval: z.number().int().positive().default(60),
-        timeout: z.number().int().positive().default(30),
-        is_enabled: z.boolean().default(true),
-        alert_email: z.string().email('E-mail inválido'),
-        description: z.string(),
-        created_by: z.string().uuid('ID do criador inválido'),
-        updated_by: z.string().uuid('ID do criador inválido'),
+        name: z.string().min(1, "Nome é obrigatório"),
+        host: z.string().min(1, "Host é obrigatório"),
+        alert_email: z.string().email("E-mail inválido"),
+        monitors: z.array(monitorInputSchema).optional(),
+        slaConfig: slaConfigInputSchema.optional()
     });
+
     getById = z.object({
-        id: z.string().uuid(),
+        id: z.string().uuid("ID deve ser um UUID válido")
     });
+
     getByUpdate = z.object({
-        name: z.string().optional(),
-        url: z.string().url().optional(),
-        monitor_type: z.enum(['http', 'https', 'ping', 'tcp']).optional(),
-        check_interval: z.number().int().positive().optional(),
-        timeout: z.number().int().positive().optional(),
-        is_enabled: z.boolean().optional(),
-        alert_email: z.string().email('E-mail inválido').optional().nullable(),
-        description: z.string().optional().nullable(),
+        name: z.string().min(1).optional(),
+        host: z.string().min(1).optional(),
+        alert_email: z.string().email('E-mail inválido').optional(),
+        status: z.enum(['up', 'down', 'warning', 'unknown']).optional()
     });
 }
+
 export const systemValidation = new SystemValidation();

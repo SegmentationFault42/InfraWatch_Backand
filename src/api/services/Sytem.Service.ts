@@ -1,50 +1,45 @@
 import { systemRepository } from '../repositories/SystemRepositories.ts';
-import { systems } from '@prisma/client';
+import { System } from '@prisma/client';
+import { ErrorFactory } from '../errors/ErrorFactory.ts';
+import { CreateSystemInput } from '../types/system.types.ts';
 
 class SystemService {
-    async addSystem(
-        data: Omit<systems, 'id' | 'status' | 'created_at' | 'updated_at'>,
-    ) {
-        const SystemExists = await systemRepository.verifySystemIfExists(data);
-
-        if (SystemExists) {
-            throw new Error('Esse sistema já está cadastrado.');
+    async addSystem(data: CreateSystemInput): Promise<System> {
+        const systemExists = await systemRepository.verifySystemIfExists(data.host);
+        
+        if (systemExists) {
+            throw ErrorFactory.systemAlreadyExists();
         }
 
-        try {
-            return await systemRepository.addSystem(data);
-        } catch (error) {
-            throw new Error('Falha ao adicionar sistema.');
-        }
+        return await systemRepository.addSystem(data);
     }
+
     async getAllSystems() {
-        const systems = await systemRepository.getAllSystems();
-        if (!(systems.length > 0)) throw new Error('Nenhum Sistema Cadastrado');
-        return systems;
-    }
-    async getSystemById(id: string) {
-        const system = await systemRepository.getSystemBydId(id);
-        if (!system) return 'Sistema não encontrado!';
-        else return system;
-    }
-    async deleteSystemById(id: string) {
-        try {
-            await systemRepository.deleteSystemById(id);
-        } catch (error) {
-            throw new Error(`Falha ao eliminar Sistema.\n Tente Novamente`);
-        }
+        return await systemRepository.getAllSystems();
     }
 
-    async updateSystemById(id: string, data: Partial<systems>) {
-        try {
-            const system = await systemRepository.verifySystem(id);
-            if (!system) return 'Sistema Inexistente';
-            await systemRepository.updateSystemById(id, data);
-            return 'Sistema actualizado';
-        } catch (err) {
-            console.error('Erro no service updateSystemById:', err);
-            return 'ERROR';
+    async getSystemById(id: string): Promise<System> {
+        const system = await systemRepository.getSystemById(id);
+        
+        if (!system) {
+            throw ErrorFactory.systemNotFound();
         }
+        
+        return system;
+    }
+
+    async deleteSystemById(id: string): Promise<void> {
+        await systemRepository.deleteSystemById(id);
+    }
+
+    async updateSystemById(id: string, data: Partial<System>): Promise<System> {
+        const systemExists = await systemRepository.verifySystemExists(id);
+        
+        if (!systemExists) {
+            throw ErrorFactory.systemNotFound();
+        }
+
+        return await systemRepository.updateSystemById(id, data);
     }
 }
 

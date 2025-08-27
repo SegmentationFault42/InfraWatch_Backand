@@ -1,44 +1,105 @@
-import { userRepository } from '../repositories/user.repository.ts';
 import * as bcrypt from 'bcrypt';
-import { users } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 import { ENV } from '../../config/dotenv.ts';
+import { ConflictError, NotFoundError, UnauthorizedError } from "../errors/base.errors.ts"
+import { userRepository } from '../repositories/user.repository.ts';
+import { roleRepository } from '../repositories/role.repository.ts';
+
+type CreateUserData = {
+    name: string;
+    email: string;
+    password: string;
+    roleId?: string;
+};
+
+type LoginResponse = {
+    token: string;
+    user: {
+        id: string;
+        name: string;
+        email: string;
+        role: {
+            id: string;
+            nome: string;
+            description: string | null;
+        } | null;
+    };
+};
 
 class UserService {
-    async createUser(
-        data: Omit<
-            users,
-            'id' | 'role' | 'updated_at' | 'created_at' | 'profile_image_url'
-        >,
-    ) {
-        const userExists = await userRepository.verifyUser(data);
-
-        if (userExists) {
-            throw new Error('Esses dados já existem.');
+    async createUser(data: CreateUserData) {
+        const existingUser = await userRepository.findByEmail(data.email);
+        if (existingUser) {
+            throw new ConflictError('Usuário já existe com este email');
         }
 
-        try {
-            const senhaHash = await bcrypt.hash(data.senha, 10);
-            data.senha = senhaHash;
-            return await userRepository.create(data);
-        } catch (error) {
-            console.log(error);
-            throw new Error('Falha ao criar usuário.');
+        let roleId = data.roleId;
+        if (!roleId) {
+            const defaultRole = await roleRepository.getDefaultViewerRole();
+            roleId = defaultRole.id;
+        } else {
+            const role = await roleRepository.findById(roleId);
+            if (!role) {
+                throw new NotFoundError('Role');
+            }
         }
+
+        const hashedPassword = await bcrypt.hash(data.password, 12);
+        const newUser = await userRepository.create({
+            ...data,
+            password: hashedPassword,
+            roleId
+        });
+
+        const { password, ...userWithoutPassword } = newUser;
+        return userWithoutPassword;
     }
-    async loginUser(email: string, password: string) {
-        const user = await userRepository.loginUser(email);
-        if (!user) throw new Error('Usuário Inexistente');
-        const senhaValida = await bcrypt.compare(password, user.senha);
-        if (!senhaValida) {
-            throw new Error('Senha inválida');
+
+    async loginUser(email: string, password: string): Promise<LoginResponse> {
+        const user = await userRepository.findForLogin(email);
+        if (!user) {
+            throw new UnauthorizedError('Credenciais inválidas');
         }
-        const tokenadmin = jwt.sign(
-            { id: user.id, email: user.email },
+
+        const isValidPassword = await bcrypt.compare(password, user.password);
+        if (!isValidPassword) {
+            throw new UnauthorizedError('Credenciais inválidas');
+        }
+
+        const fullUser = await userRepository.findById(user.id);
+        if (!fullUser) {
+            throw new NotFoundError('Usuário');
+        }
+
+        const token = jwt.sign(
+            { 
+                id: user.id, 
+                email: user.email,
+                roleId: fullUser.role?.id 
+            },
             ENV.JWT_SECRET,
-            { expiresIn: '15min' },
+            { expiresIn: '24h' }
         );
-        return tokenadmin;
+
+        return {
+            token,
+            user: {
+                id: fullUser.id,
+                name: fullUser.name,
+                email: fullUser.email,
+                role: fullUser.role
+            }
+        };
+    }
+
+    async getUserById(id: string) {
+        const user = await userRepository.findById(id);
+        if (!user) {
+            throw new NotFoundError('Usuário');
+        }
+
+        const { password, ...userWithoutPassword } = user;
+        return userWithoutPassword;
     }
 }
 

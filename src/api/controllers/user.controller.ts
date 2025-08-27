@@ -1,48 +1,101 @@
-import { userValidation } from '../validations/user.validation.ts';
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { userService } from '../services/user.service.ts';
 import { z } from 'zod';
+import { ConflictError, NotFoundError, UnauthorizedError } from '../errors/base.errors.ts';
+import { userService } from '../services/user.service.ts';
+import { userValidation } from '../validations/user.validation.ts';
 
 class UserController {
     async createUser(req: FastifyRequest, res: FastifyReply) {
         try {
             const data = userValidation.createUserSchema.parse(req.body);
-            await userService.createUser(data);
-            res.status(201).send({ message: 'Usuario criado com sucesso' });
-        } catch (err: any) {
-            console.log(err.message);
-            if (err instanceof z.ZodError) {
-                res.status(400).send({ error: 'Validação falhou' });
-            } else if (err.message === err.message)
-                res.status(400).send({ message: err.message });
-            else {
-                res.status(500).send({ error: 'Erro interno no servidor.' });
+            const user = await userService.createUser(data);
+            
+            res.status(201).send({
+                success: true,
+                message: 'Usuário criado com sucesso',
+                data: user
+            });
+        } catch (error: any) {
+            if (error instanceof z.ZodError) {
+                res.status(400).send({
+                    success: false,
+                    message: 'Dados inválidos',
+                });
+            } else if (error instanceof ConflictError) {
+                res.status(error.statusCode).send({
+                    success: false,
+                    message: error.message,
+                    code: error.code
+                });
+            } else {
+                res.status(500).send({
+                    success: false,
+                    message: 'Erro interno do servidor'
+                });
             }
         }
     }
 
     async loginUser(req: FastifyRequest, res: FastifyReply) {
         try {
-            const data = userValidation.loginUser.parse(req.body);
-            const TokenOrStatus = await userService.loginUser(
-                data.email,
-                data.senha,
-            );
-            res.setCookie('token', TokenOrStatus, {
+            const data = userValidation.loginUserSchema.parse(req.body);
+            const loginResult = await userService.loginUser(data.email, data.password);
+            
+            res.setCookie('token', loginResult.token, {
                 httpOnly: true,
-                secure: true,
-                sameSite: 'none',
-                maxAge: 3600,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'strict',
+                maxAge: 24 * 60 * 60
             });
-            res.status(200).send({ message: TokenOrStatus });
+
+            res.status(200).send({
+                success: true,
+                message: 'Login realizado com sucesso',
+                data: {
+                    token: loginResult.token,
+                    user: loginResult.user
+                }
+            });
         } catch (error: any) {
-            if (
-                error.message === 'Usuário Inexistente' ||
-                error.message === 'Senha inválida'
-            ) {
-                res.status(400).send({ message: 'Credenciais inválidas' });
+            if (error instanceof z.ZodError) {
+                res.status(400).send({
+                    success: false,
+                    message: 'Dados inválidos'
+                });
+            } else if (error instanceof UnauthorizedError) {
+                res.status(error.statusCode).send({
+                    success: false,
+                    message: error.message
+                });
             } else {
-                res.status(500).send({ message: error.message });
+                res.status(500).send({
+                    success: false,
+                    message: 'Erro interno do servidor'
+                });
+            }
+        }
+    }
+
+    async getUser(req: FastifyRequest, res: FastifyReply) {
+        try {
+            const { id } = userValidation.idSchema.parse(req.params);
+            const user = await userService.getUserById(id);
+            
+            res.status(200).send({
+                success: true,
+                data: user
+            });
+        } catch (error: any) {
+            if (error instanceof NotFoundError) {
+                res.status(error.statusCode).send({
+                    success: false,
+                    message: error.message
+                });
+            } else {
+                res.status(500).send({
+                    success: false,
+                    message: 'Erro interno do servidor'
+                });
             }
         }
     }

@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify';
 import { userController } from '../controllers/user.controller.ts';
 import {
     CreateUserSwaggerSchema,
-    LoginSchemaSwagger,
+    LoginSwaggerSchema,
 } from '../schema/userSchema.ts';
 
 export async function userRoutes(fastify: FastifyInstance) {
@@ -13,7 +13,7 @@ export async function userRoutes(fastify: FastifyInstance) {
     );
     fastify.post(
         '/user/login',
-        { schema: LoginSchemaSwagger },
+        { schema: LoginSwaggerSchema },
         userController.loginUser,
     );
 }
