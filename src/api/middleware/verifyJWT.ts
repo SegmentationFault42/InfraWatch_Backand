@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import jwt from 'jsonwebtoken';
-import { ENV } from '../../config/dotenv.ts';
+import { ENV } from '../../config/dotenv';
 
 export async function verifyJWT(req: FastifyRequest, res: FastifyReply) {
     let token: string | undefined;

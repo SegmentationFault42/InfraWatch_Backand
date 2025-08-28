@@ -1,9 +1,9 @@
 import * as bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { ENV } from '../../config/dotenv.ts';
-import { ConflictError, NotFoundError, UnauthorizedError } from "../errors/base.errors.ts"
-import { userRepository } from '../repositories/user.repository.ts';
-import { roleRepository } from '../repositories/role.repository.ts';
+import { ENV } from '../../config/dotenv';
+import { ConflictError, NotFoundError, UnauthorizedError } from "../errors/base.errors"
+import { userRepository } from '../repositories/user.repository';
+import { roleRepository } from '../repositories/role.repository';
 
 type CreateUserData = {
     name: string;

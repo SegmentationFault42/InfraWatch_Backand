@@ -1,13 +1,13 @@
 import { FastifyInstance } from 'fastify';
-import { systemController } from '../controllers/System.controller.ts';
+import { systemController } from '../controllers/System.controller';
 import {
     CreateSystemSwaggerSchema,
     DeleteSystemSwaggerSchema,
     GetAllSystemsSwaggerSchema,
     GetSystemByIdSwaggerSchema,
     UpdateSystemSwaggerSchema,
-} from '../schema/system.schema.ts';
-import { verifyJWT } from '../middleware/verifyJWT.ts';
+} from '../schema/system.schema';
+import { verifyJWT } from '../middleware/verifyJWT';
 
 export function SystemRoutes(fastify: FastifyInstance) {
     fastify.post('/hosts/create',{ schema: CreateSystemSwaggerSchema, /*preHandler: verifyJWT*/ },(req, res)=>{

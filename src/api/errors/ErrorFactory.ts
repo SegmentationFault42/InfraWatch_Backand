@@ -1,5 +1,5 @@
-import { SystemError } from './SystemError.ts';
-import { ERROR_CODES, ERROR_MESSAGES } from './ErrorCodes.ts';
+import { SystemError } from './SystemError';
+import { ERROR_CODES, ERROR_MESSAGES } from './ErrorCodes';
 
 export class ErrorFactory {
     static validationError(details?: any): SystemError {

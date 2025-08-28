@@ -1,6 +1,6 @@
 // src/api/middlewares/auditLog.plugin.ts
 import { FastifyInstance } from 'fastify';
-import { auditLogService } from '../services/AuditLog.Service.ts';
+import { auditLogService } from '../services/AuditLog.Service';
 
 export async function auditLogPlugin(fastify: FastifyInstance) {
     fastify.addHook('onSend', async (request, reply, payload) => {

@@ -1,10 +1,10 @@
-import { systemService } from '../services/Sytem.Service.ts';
+import { systemService } from '../services/Sytem.Service';
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { z } from 'zod';
-import { systemValidation } from '../validations/system.validation.ts';
+import { systemValidation } from '../validations/system.validation';
 import { System } from '@prisma/client';
-import { auditLogService } from '../services/AuditLog.Service.ts';
-import { SystemError } from '../errors/SystemError.ts';
+import { auditLogService } from '../services/AuditLog.Service';
+import { SystemError } from '../errors/SystemError';
 
 class SystemController {
     async addSystem(req: FastifyRequest, res: FastifyReply) {

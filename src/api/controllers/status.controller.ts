@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
-import statusService from '../services/status.service.js';
+import statusService from '../services/status.service';
 
 class StatusController {
     async getStatus(request: FastifyRequest, reply: FastifyReply) {

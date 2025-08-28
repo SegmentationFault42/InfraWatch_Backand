@@ -1,5 +1,5 @@
 import { Role } from '@prisma/client';
-import { prisma } from '../../config/database.ts';
+import { prisma } from '../../config/database';
 
 type CreateRoleData = {
     nome: string;

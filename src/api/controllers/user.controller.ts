@@ -1,8 +1,8 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { z } from 'zod';
-import { ConflictError, NotFoundError, UnauthorizedError } from '../errors/base.errors.ts';
-import { userService } from '../services/user.service.ts';
-import { userValidation } from '../validations/user.validation.ts';
+import { ConflictError, NotFoundError, UnauthorizedError } from '../errors/base.errors';
+import { userService } from '../services/user.service';
+import { userValidation } from '../validations/user.validation';
 
 class UserController {
     async createUser(req: FastifyRequest, res: FastifyReply) {

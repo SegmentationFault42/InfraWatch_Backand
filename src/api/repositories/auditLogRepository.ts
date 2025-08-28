@@ -1,5 +1,5 @@
 import { Prisma, audit_logs } from '@prisma/client';
-import { prisma } from '../../config/database.ts';
+import { prisma } from '../../config/database';
 
 class AuditLogRepository {
     async createLog(

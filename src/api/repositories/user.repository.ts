@@ -1,6 +1,6 @@
-import { prisma } from '../../config/database.ts';
+import { prisma } from '../../config/database';
 import { User, Prisma } from '@prisma/client';
-import { NotFoundError } from '../errors/base.errors.ts';
+import { NotFoundError } from '../errors/base.errors';
 
 type CreateUserData = {
     name: string;

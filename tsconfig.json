@@ -7,7 +7,7 @@
 
         // Environment Settings
         // See also https://aka.ms/tsconfig/module
-        "module": "nodenext",
+        "module": "commonjs",
         "target": "esnext",
 
         "types": ["vitest/globals"],
@@ -36,12 +36,12 @@
 
         // Recommended Options
 
-        "allowImportingTsExtensions": true,
+        //"allowImportingTsExtensions": true,
         //"noEmit": true,
 
         "strict": true,
         "noImplicitAny": true,
-        "moduleResolution": "nodenext",
+        "moduleResolution": "node",
         "esModuleInterop": true,
         "jsx": "react-jsx",
         //"verbatimModuleSyntax": true,

@@ -1,7 +1,7 @@
-import { systemRepository } from '../repositories/SystemRepositories.ts';
+import { systemRepository } from '../repositories/SystemRepositories';
 import { System } from '@prisma/client';
-import { ErrorFactory } from '../errors/ErrorFactory.ts';
-import { CreateSystemInput } from '../types/system.types.ts';
+import { ErrorFactory } from '../errors/ErrorFactory';
+import { CreateSystemInput } from '../types/system.types';
 
 class SystemService {
     async addSystem(data: CreateSystemInput): Promise<System> {

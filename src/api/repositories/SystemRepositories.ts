@@ -1,7 +1,7 @@
-import { prisma } from '../../config/database.ts';
+import { prisma } from '../../config/database';
 import { System, Prisma } from '@prisma/client';
-import { ErrorFactory } from '../errors/ErrorFactory.ts';
-import { CreateSystemInput } from '../types/system.types.ts';
+import { ErrorFactory } from '../errors/ErrorFactory';
+import { CreateSystemInput } from '../types/system.types';
 
 class SystemRepository {
     async verifySystemIfExists(host: string): Promise<System | null> {

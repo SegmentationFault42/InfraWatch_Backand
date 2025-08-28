@@ -1,5 +1,5 @@
 // src/api/services/AuditLog.service.ts
-import { auditLogRepository } from '../repositories/auditLogRepository.ts';
+import { auditLogRepository } from '../repositories/auditLogRepository';
 import { Prisma } from '@prisma/client';
 
 class AuditLogService {

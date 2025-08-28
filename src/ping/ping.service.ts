@@ -1,6 +1,6 @@
 import ping from 'ping';
-import { merge_ping_options, get_timestamp } from './ping.utils.ts';
-import type { PingOptions, pingResult } from './ping.config.ts';
+import { merge_ping_options, get_timestamp } from './ping.utils';
+import type { PingOptions, pingResult } from './ping.config';
 
 export function wait(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));

@@ -1,4 +1,4 @@
-import type { PingOptions } from './ping.config.ts';
+import type { PingOptions } from './ping.config';
 import { z } from 'zod';
 
 export const ping_options_schema = z.object({

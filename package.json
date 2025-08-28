@@ -2,7 +2,7 @@
     "name": "infrawatch-backend",
     "version": "1.0.0",
     "main": "src/app.js",
-    "type": "module",
+    "type": "commonjs",
     "scripts": {
         "build": "tsc",
         "start": "node dist/app.js",
@@ -18,7 +18,7 @@
         "@fastify/secure-session": "^8.2.0",
         "@fastify/swagger": "^9.5.1",
         "@fastify/swagger-ui": "^5.2.3",
-        "@prisma/client": "^6.13.0",
+        "@prisma/client": "^6.15.0",
         "bcrypt": "^6.0.0",
         "dotenv": "^17.2.1",
         "fastify": "^5.4.0",

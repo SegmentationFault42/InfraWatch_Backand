@@ -1,9 +1,9 @@
 import { FastifyInstance } from 'fastify';
-import { userController } from '../controllers/user.controller.ts';
+import { userController } from '../controllers/user.controller';
 import {
     CreateUserSwaggerSchema,
     LoginSwaggerSchema,
-} from '../schema/userSchema.ts';
+} from '../schema/userSchema';
 
 export async function userRoutes(fastify: FastifyInstance) {
     fastify.post(

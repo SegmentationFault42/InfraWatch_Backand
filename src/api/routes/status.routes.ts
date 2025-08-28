@@ -1,7 +1,7 @@
 import type { FastifyInstance } from 'fastify';
 
-import statusController from '../controllers/status.controller.js';
-import { getStatusSchema } from '../schema/status.schema.js';
+import statusController from '../controllers/status.controller';
+import { getStatusSchema } from '../schema/status.schema';
 
 export default async function statusRoutes(fastify: FastifyInstance) {
     fastify.get(
