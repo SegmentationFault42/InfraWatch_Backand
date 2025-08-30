@@ -4,15 +4,24 @@
     "main": "src/app.js",
     "type": "commonjs",
     "scripts": {
-        "build": "prisma generate && tsc",
-        "start": "node dist/app.js",
-        "dev": "tsx watch src/app.ts",
-        "lint": "eslint . --ext .ts",
-        "lint:fix": "eslint . --ext .ts --fix",
-        "format": "prettier --write .",
-        "test": "vitest run",
-        "test:watch": "vitest"
-    },
+    "build": "prisma generate && prisma generate --schema=prisma/timeseries.prisma && tsc",
+    "start": "node dist/app.js",
+    "dev": "tsx watch src/app.ts",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "format": "prettier --write .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    
+    "prisma:generate": "prisma generate && prisma generate --schema=prisma/timeseries.prisma",
+    "prisma:push": "prisma db push && prisma db push --schema=prisma/timeseries.prisma",
+    "prisma:studio": "prisma studio",
+    "prisma:studio-ts": "prisma studio --schema=prisma/timeseries.prisma --port 5556",
+    "prisma:migrate": "prisma migrate dev && prisma migrate dev --schema=prisma/timeseries.prisma",
+    
+    "db:test": "tsx src/scripts/test-databases.ts",
+    "db:seed": "tsx src/scripts/seed-metrics.ts"
+  },
     "dependencies": {
         "@fastify/cookie": "^11.0.2",
         "@fastify/secure-session": "^8.2.0",
@@ -23,6 +32,7 @@
         "dotenv": "^17.2.1",
         "fastify": "^5.4.0",
         "jsonwebtoken": "^9.0.2",
+        "pg": "^8.16.3",
         "ping": "^0.4.4",
         "zod": "^4.0.17"
     },
@@ -43,7 +53,7 @@
         "prettier": "^3.6.2",
         "prisma": "^6.14.0",
         "supertest": "^7.1.4",
-        "tsx": "^4.20.5",
+        "tsx": "^4.7.0",
         "typescript": "^5.9.2",
         "typescript-eslint": "^8.39.0",
         "vitest": "^3.2.4"
