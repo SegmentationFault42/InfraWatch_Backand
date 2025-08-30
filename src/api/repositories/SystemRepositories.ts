@@ -7,7 +7,7 @@ class SystemRepository {
     async verifySystemIfExists(host: string): Promise<System | null> {
         try {
             return await prisma.system.findFirst({
-                where: { host }
+                where: { host },
             });
         } catch (error) {
             console.error('Error verifying system existence:', error);
@@ -20,7 +20,7 @@ class SystemRepository {
             const systemData: Prisma.SystemCreateInput = {
                 name: data.name,
                 host: data.host,
-                alert_email: data.alert_email
+                alert_email: data.alert_email,
             };
 
             if (data.monitors?.length) {
@@ -35,8 +35,8 @@ class SystemRepository {
                 data: systemData,
                 include: {
                     monitors: true,
-                    SLAConfig: true
-                }
+                    SLAConfig: true,
+                },
             });
         } catch (error) {
             console.error('Error creating system:', error);
@@ -56,14 +56,14 @@ class SystemRepository {
                             id: true,
                             type: true,
                             config: true,
-                            interval: true
-                        }
+                            interval: true,
+                        },
                     },
                     status: true,
                     alert_email: true,
                     createdAt: true,
-                    updatedAt: true
-                }
+                    updatedAt: true,
+                },
             });
         } catch (error) {
             console.error('Error fetching all systems:', error);
@@ -77,8 +77,8 @@ class SystemRepository {
                 where: { id },
                 include: {
                     monitors: true,
-                    SLAConfig: true
-                }
+                    SLAConfig: true,
+                },
             });
         } catch (error) {
             console.error('Error fetching system by ID:', error);
@@ -89,11 +89,14 @@ class SystemRepository {
     async deleteSystemById(id: string): Promise<void> {
         try {
             await prisma.system.delete({
-                where: { id }
+                where: { id },
             });
         } catch (error) {
             console.error('Error deleting system:', error);
-            if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+            if (
+                error instanceof Prisma.PrismaClientKnownRequestError &&
+                error.code === 'P2025'
+            ) {
                 throw ErrorFactory.systemNotFound();
             }
             throw ErrorFactory.systemDeleteFailed();
@@ -104,7 +107,7 @@ class SystemRepository {
         try {
             const system = await prisma.system.findFirst({
                 where: { id },
-                select: { id: true }
+                select: { id: true },
             });
             return !!system;
         } catch (error) {
@@ -117,11 +120,14 @@ class SystemRepository {
         try {
             return await prisma.system.update({
                 where: { id },
-                data
+                data,
             });
         } catch (error) {
             console.error('Error updating system:', error);
-            if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+            if (
+                error instanceof Prisma.PrismaClientKnownRequestError &&
+                error.code === 'P2025'
+            ) {
                 throw ErrorFactory.systemNotFound();
             }
             throw ErrorFactory.systemUpdateFailed({ originalError: error });

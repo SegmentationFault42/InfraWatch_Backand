@@ -7,7 +7,7 @@ export class ErrorFactory {
             ERROR_CODES.VALIDATION_FAILED,
             ERROR_MESSAGES[ERROR_CODES.VALIDATION_FAILED],
             400,
-            details
+            details,
         );
     }
 
@@ -15,7 +15,7 @@ export class ErrorFactory {
         return new SystemError(
             ERROR_CODES.SYSTEM_ALREADY_EXISTS,
             ERROR_MESSAGES[ERROR_CODES.SYSTEM_ALREADY_EXISTS],
-            400
+            400,
         );
     }
 
@@ -23,7 +23,7 @@ export class ErrorFactory {
         return new SystemError(
             ERROR_CODES.SYSTEM_NOT_FOUND,
             ERROR_MESSAGES[ERROR_CODES.SYSTEM_NOT_FOUND],
-            404
+            404,
         );
     }
 
@@ -32,7 +32,7 @@ export class ErrorFactory {
             ERROR_CODES.SYSTEM_CREATE_FAILED,
             ERROR_MESSAGES[ERROR_CODES.SYSTEM_CREATE_FAILED],
             500,
-            details
+            details,
         );
     }
 
@@ -40,7 +40,7 @@ export class ErrorFactory {
         return new SystemError(
             ERROR_CODES.SYSTEM_DELETE_FAILED,
             ERROR_MESSAGES[ERROR_CODES.SYSTEM_DELETE_FAILED],
-            400
+            400,
         );
     }
 
@@ -49,7 +49,7 @@ export class ErrorFactory {
             ERROR_CODES.SYSTEM_UPDATE_FAILED,
             ERROR_MESSAGES[ERROR_CODES.SYSTEM_UPDATE_FAILED],
             500,
-            details
+            details,
         );
     }
 
@@ -58,7 +58,7 @@ export class ErrorFactory {
             ERROR_CODES.INTERNAL_SERVER_ERROR,
             ERROR_MESSAGES[ERROR_CODES.INTERNAL_SERVER_ERROR],
             500,
-            details
+            details,
         );
     }
 }

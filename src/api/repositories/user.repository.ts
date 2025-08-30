@@ -20,14 +20,14 @@ type UserWithRole = User & {
 class UserRepository {
     async findByEmail(email: string): Promise<User | null> {
         return await prisma.user.findUnique({
-            where: { email }
+            where: { email },
         });
     }
 
     async findById(id: string): Promise<UserWithRole | null> {
         return await prisma.user.findUnique({
             where: { id },
-            include: { role: true }
+            include: { role: true },
         });
     }
 
@@ -35,7 +35,7 @@ class UserRepository {
         try {
             return await prisma.user.create({
                 data,
-                include: { role: true }
+                include: { role: true },
             });
         } catch (error) {
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -50,24 +50,29 @@ class UserRepository {
         }
     }
 
-    async findForLogin(email: string): Promise<Pick<User, 'id' | 'email' | 'password'> | null> {
+    async findForLogin(
+        email: string,
+    ): Promise<Pick<User, 'id' | 'email' | 'password'> | null> {
         return await prisma.user.findUnique({
             where: { email },
-            select: { id: true, email: true, password: true }
+            select: { id: true, email: true, password: true },
         });
     }
 
-    async update(id: string, data: Partial<CreateUserData>): Promise<UserWithRole> {
+    async update(
+        id: string,
+        data: Partial<CreateUserData>,
+    ): Promise<UserWithRole> {
         return await prisma.user.update({
             where: { id },
             data,
-            include: { role: true }
+            include: { role: true },
         });
     }
 
     async delete(id: string): Promise<void> {
         await prisma.user.delete({
-            where: { id }
+            where: { id },
         });
     }
 
@@ -76,7 +81,7 @@ class UserRepository {
             skip,
             take,
             include: { role: true },
-            orderBy: { createdAt: 'desc' }
+            orderBy: { createdAt: 'desc' },
         });
     }
 }

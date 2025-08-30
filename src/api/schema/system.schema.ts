@@ -4,20 +4,20 @@ export const CreateSystemSwaggerSchema = {
     body: {
         type: 'object',
         properties: {
-            name: { 
-                type: 'string', 
+            name: {
+                type: 'string',
                 description: 'Nome do sistema',
-                minLength: 1
+                minLength: 1,
             },
             host: {
                 type: 'string',
                 description: 'Host ou IP do sistema a ser monitorado',
-                minLength: 1
+                minLength: 1,
             },
             alert_email: {
                 type: 'string',
                 format: 'email',
-                description: 'Email para envio de alertas'
+                description: 'Email para envio de alertas',
             },
             monitors: {
                 type: 'array',
@@ -28,22 +28,22 @@ export const CreateSystemSwaggerSchema = {
                         type: {
                             type: 'string',
                             enum: ['API', 'PING', 'SNMP', 'WEBHOOK'],
-                            description: 'Tipo de monitor'
+                            description: 'Tipo de monitor',
                         },
                         config: {
                             type: 'object',
                             description: 'Configurações específicas do monitor',
-                            additionalProperties: true
+                            additionalProperties: true,
                         },
                         interval: {
                             type: 'integer',
                             minimum: 1,
-                            description: 'Intervalo de checagem em segundos'
-                        }
+                            description: 'Intervalo de checagem em segundos',
+                        },
                     },
-                    required: ['type', 'config']
+                    required: ['type', 'config'],
                 },
-                nullable: true
+                nullable: true,
             },
             slaConfig: {
                 type: 'object',
@@ -53,30 +53,38 @@ export const CreateSystemSwaggerSchema = {
                         type: 'number',
                         minimum: 0,
                         maximum: 100,
-                        description: 'Meta de uptime em porcentagem (ex: 99.9)'
+                        description: 'Meta de uptime em porcentagem (ex: 99.9)',
                     },
                     maxDowntime: {
                         type: 'integer',
                         minimum: 0,
-                        description: 'Tempo máximo de downtime permitido em minutos'
+                        description:
+                            'Tempo máximo de downtime permitido em minutos',
                     },
                     responseTimeTarget: {
                         type: 'integer',
                         minimum: 1,
-                        description: 'Tempo de resposta alvo em milissegundos'
+                        description: 'Tempo de resposta alvo em milissegundos',
                     },
                     monitoringWindow: {
                         type: 'string',
-                        description: 'Janela de monitoramento (ex: "monthly", "quarterly")',
-                        enum: ['daily', 'weekly', 'monthly', 'quarterly', 'yearly']
-                    }
+                        description:
+                            'Janela de monitoramento (ex: "monthly", "quarterly")',
+                        enum: [
+                            'daily',
+                            'weekly',
+                            'monthly',
+                            'quarterly',
+                            'yearly',
+                        ],
+                    },
                 },
                 required: ['uptimeTarget'],
-                nullable: true
-            }
+                nullable: true,
+            },
         },
         required: ['name', 'host', 'alert_email'],
-        additionalProperties: false
+        additionalProperties: false,
     },
     response: {
         201: {
@@ -85,7 +93,7 @@ export const CreateSystemSwaggerSchema = {
             properties: {
                 message: {
                     type: 'string',
-                    example: 'Sistema adicionado com sucesso'
+                    example: 'Sistema adicionado com sucesso',
                 },
                 data: {
                     type: 'object',
@@ -93,25 +101,25 @@ export const CreateSystemSwaggerSchema = {
                         id: {
                             type: 'string',
                             format: 'uuid',
-                            description: 'ID único do sistema'
+                            description: 'ID único do sistema',
                         },
                         name: {
                             type: 'string',
-                            description: 'Nome do sistema'
+                            description: 'Nome do sistema',
                         },
                         host: {
                             type: 'string',
-                            description: 'Host do sistema'
+                            description: 'Host do sistema',
                         },
                         alert_email: {
                             type: 'string',
                             format: 'email',
-                            description: 'Email para alertas'
+                            description: 'Email para alertas',
                         },
                         status: {
                             type: 'string',
                             enum: ['up', 'down', 'warning', 'unknown'],
-                            description: 'Status atual do sistema'
+                            description: 'Status atual do sistema',
                         },
                         monitors: {
                             type: 'array',
@@ -119,14 +127,19 @@ export const CreateSystemSwaggerSchema = {
                                 type: 'object',
                                 properties: {
                                     id: { type: 'string', format: 'uuid' },
-                                    type: { 
+                                    type: {
                                         type: 'string',
-                                        enum: ['API', 'PING', 'SNMP', 'WEBHOOK']
+                                        enum: [
+                                            'API',
+                                            'PING',
+                                            'SNMP',
+                                            'WEBHOOK',
+                                        ],
                                     },
                                     config: { type: 'object' },
-                                    interval: { type: 'integer' }
-                                }
-                            }
+                                    interval: { type: 'integer' },
+                                },
+                            },
                         },
                         SLAConfig: {
                             type: 'array',
@@ -137,34 +150,34 @@ export const CreateSystemSwaggerSchema = {
                                     uptimeTarget: { type: 'number' },
                                     maxDowntime: { type: 'integer' },
                                     responseTimeTarget: { type: 'integer' },
-                                    monitoringWindow: { type: 'string' }
-                                }
-                            }
+                                    monitoringWindow: { type: 'string' },
+                                },
+                            },
                         },
                         createdAt: {
                             type: 'string',
                             format: 'date-time',
-                            description: 'Data de criação'
+                            description: 'Data de criação',
                         },
                         updatedAt: {
                             type: 'string',
                             format: 'date-time',
-                            description: 'Data da última atualização'
-                        }
-                    }
-                }
-            }
+                            description: 'Data da última atualização',
+                        },
+                    },
+                },
+            },
         },
         400: {
             description: 'Falha de validação ou sistema já existe',
             type: 'object',
             properties: {
-                error: { 
-                    type: 'string', 
+                error: {
+                    type: 'string',
                     examples: [
                         'A validação falhou',
-                        'Esse sistema já está cadastrado'
-                    ]
+                        'Esse sistema já está cadastrado',
+                    ],
                 },
                 details: {
                     type: 'array',
@@ -175,36 +188,37 @@ export const CreateSystemSwaggerSchema = {
                             expected: { type: 'string' },
                             received: { type: 'string' },
                             path: { type: 'array', items: { type: 'string' } },
-                            message: { type: 'string' }
-                        }
+                            message: { type: 'string' },
+                        },
                     },
-                    description: 'Detalhes dos erros de validação (quando aplicável)'
+                    description:
+                        'Detalhes dos erros de validação (quando aplicável)',
                 },
                 code: {
                     type: 'string',
-                    description: 'Código do erro para identificação'
-                }
-            }
+                    description: 'Código do erro para identificação',
+                },
+            },
         },
         500: {
             description: 'Erro interno do servidor',
             type: 'object',
             properties: {
-                error: { 
-                    type: 'string', 
-                    example: 'Erro interno no servidor' 
+                error: {
+                    type: 'string',
+                    example: 'Erro interno no servidor',
                 },
                 message: {
                     type: 'string',
-                    example: 'Algo deu errado, tente novamente mais tarde.'
+                    example: 'Algo deu errado, tente novamente mais tarde.',
                 },
                 code: {
                     type: 'string',
-                    example: 'INTERNAL_SERVER_ERROR'
-                }
-            }
-        }
-    }
+                    example: 'INTERNAL_SERVER_ERROR',
+                },
+            },
+        },
+    },
 };
 
 export const GetAllSystemsSwaggerSchema = {
@@ -223,9 +237,9 @@ export const GetAllSystemsSwaggerSchema = {
                             id: { type: 'string', format: 'uuid' },
                             name: { type: 'string' },
                             host: { type: 'string' },
-                            status: { 
+                            status: {
                                 type: 'string',
-                                enum: ['up', 'down', 'warning', 'unknown']
+                                enum: ['up', 'down', 'warning', 'unknown'],
                             },
                             alert_email: { type: 'string', format: 'email' },
                             monitors: {
@@ -234,35 +248,40 @@ export const GetAllSystemsSwaggerSchema = {
                                     type: 'object',
                                     properties: {
                                         id: { type: 'string', format: 'uuid' },
-                                        type: { 
+                                        type: {
                                             type: 'string',
-                                            enum: ['API', 'PING', 'SNMP', 'WEBHOOK']
+                                            enum: [
+                                                'API',
+                                                'PING',
+                                                'SNMP',
+                                                'WEBHOOK',
+                                            ],
                                         },
                                         config: { type: 'object' },
-                                        interval: { type: 'integer' }
-                                    }
-                                }
+                                        interval: { type: 'integer' },
+                                    },
+                                },
                             },
                             createdAt: { type: 'string', format: 'date-time' },
-                            updatedAt: { type: 'string', format: 'date-time' }
-                        }
-                    }
+                            updatedAt: { type: 'string', format: 'date-time' },
+                        },
+                    },
                 },
                 count: {
                     type: 'integer',
-                    description: 'Número total de sistemas'
-                }
-            }
+                    description: 'Número total de sistemas',
+                },
+            },
         },
         500: {
             description: 'Erro interno do servidor',
             type: 'object',
             properties: {
                 error: { type: 'string' },
-                code: { type: 'string' }
-            }
-        }
-    }
+                code: { type: 'string' },
+            },
+        },
+    },
 };
 
 export const GetSystemByIdSwaggerSchema = {
@@ -274,10 +293,10 @@ export const GetSystemByIdSwaggerSchema = {
             id: {
                 type: 'string',
                 format: 'uuid',
-                description: 'ID do sistema'
-            }
+                description: 'ID do sistema',
+            },
         },
-        required: ['id']
+        required: ['id'],
     },
     response: {
         200: {
@@ -291,43 +310,43 @@ export const GetSystemByIdSwaggerSchema = {
                         name: { type: 'string' },
                         host: { type: 'string' },
                         alert_email: { type: 'string', format: 'email' },
-                        status: { 
+                        status: {
                             type: 'string',
-                            enum: ['up', 'down', 'warning', 'unknown']
+                            enum: ['up', 'down', 'warning', 'unknown'],
                         },
                         monitors: { type: 'array', items: { type: 'object' } },
                         SLAConfig: { type: 'array', items: { type: 'object' } },
                         createdAt: { type: 'string', format: 'date-time' },
-                        updatedAt: { type: 'string', format: 'date-time' }
-                    }
-                }
-            }
+                        updatedAt: { type: 'string', format: 'date-time' },
+                    },
+                },
+            },
         },
         400: {
             description: 'ID inválido',
             type: 'object',
             properties: {
                 error: { type: 'string', example: 'Validação falhou' },
-                details: { type: 'array', items: { type: 'object' } }
-            }
+                details: { type: 'array', items: { type: 'object' } },
+            },
         },
         404: {
             description: 'Sistema não encontrado',
             type: 'object',
             properties: {
                 error: { type: 'string', example: 'Sistema não encontrado' },
-                code: { type: 'string', example: 'SYSTEM_NOT_FOUND' }
-            }
+                code: { type: 'string', example: 'SYSTEM_NOT_FOUND' },
+            },
         },
         500: {
             description: 'Erro interno do servidor',
             type: 'object',
             properties: {
                 error: { type: 'string' },
-                code: { type: 'string' }
-            }
-        }
-    }
+                code: { type: 'string' },
+            },
+        },
+    },
 };
 
 export const UpdateSystemSwaggerSchema = {
@@ -339,36 +358,36 @@ export const UpdateSystemSwaggerSchema = {
             id: {
                 type: 'string',
                 format: 'uuid',
-                description: 'ID do sistema'
-            }
+                description: 'ID do sistema',
+            },
         },
-        required: ['id']
+        required: ['id'],
     },
     body: {
         type: 'object',
         properties: {
-            name: { 
-                type: 'string', 
+            name: {
+                type: 'string',
                 minLength: 1,
-                description: 'Nome do sistema'
+                description: 'Nome do sistema',
             },
             host: {
                 type: 'string',
                 minLength: 1,
-                description: 'Host do sistema'
+                description: 'Host do sistema',
             },
             alert_email: {
                 type: 'string',
                 format: 'email',
-                description: 'Email para alertas'
+                description: 'Email para alertas',
             },
             status: {
                 type: 'string',
                 enum: ['up', 'down', 'warning', 'unknown'],
-                description: 'Status do sistema'
-            }
+                description: 'Status do sistema',
+            },
         },
-        additionalProperties: false
+        additionalProperties: false,
     },
     response: {
         200: {
@@ -377,39 +396,39 @@ export const UpdateSystemSwaggerSchema = {
             properties: {
                 message: {
                     type: 'string',
-                    example: 'Sistema atualizado com sucesso'
+                    example: 'Sistema atualizado com sucesso',
                 },
                 data: {
                     type: 'object',
-                    description: 'Dados do sistema atualizado'
-                }
-            }
+                    description: 'Dados do sistema atualizado',
+                },
+            },
         },
         400: {
             description: 'Dados inválidos',
             type: 'object',
             properties: {
                 error: { type: 'string' },
-                details: { type: 'array' }
-            }
+                details: { type: 'array' },
+            },
         },
         404: {
             description: 'Sistema não encontrado',
             type: 'object',
             properties: {
                 error: { type: 'string' },
-                code: { type: 'string' }
-            }
+                code: { type: 'string' },
+            },
         },
         500: {
             description: 'Erro interno do servidor',
             type: 'object',
             properties: {
                 error: { type: 'string' },
-                code: { type: 'string' }
-            }
-        }
-    }
+                code: { type: 'string' },
+            },
+        },
+    },
 };
 
 export const DeleteSystemSwaggerSchema = {
@@ -421,10 +440,10 @@ export const DeleteSystemSwaggerSchema = {
             id: {
                 type: 'string',
                 format: 'uuid',
-                description: 'ID do sistema'
-            }
+                description: 'ID do sistema',
+            },
         },
-        required: ['id']
+        required: ['id'],
     },
     response: {
         200: {
@@ -433,31 +452,31 @@ export const DeleteSystemSwaggerSchema = {
             properties: {
                 message: {
                     type: 'string',
-                    example: 'Sistema removido com sucesso'
-                }
-            }
+                    example: 'Sistema removido com sucesso',
+                },
+            },
         },
         400: {
             description: 'ID inválido',
             type: 'object',
             properties: {
-                error: { type: 'string' }
-            }
+                error: { type: 'string' },
+            },
         },
         404: {
             description: 'Sistema não encontrado',
             type: 'object',
             properties: {
                 error: { type: 'string' },
-                code: { type: 'string' }
-            }
+                code: { type: 'string' },
+            },
         },
         500: {
             description: 'Erro interno do servidor',
             type: 'object',
             properties: {
-                error: { type: 'string' }
-            }
-        }
-    }
+                error: { type: 'string' },
+            },
+        },
+    },
 };

@@ -1,7 +1,11 @@
 import * as bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { ENV } from '../../config/dotenv';
-import { ConflictError, NotFoundError, UnauthorizedError } from "../errors/base.errors"
+import {
+    ConflictError,
+    NotFoundError,
+    UnauthorizedError,
+} from '../errors/base.errors';
 import { userRepository } from '../repositories/user.repository';
 import { roleRepository } from '../repositories/role.repository';
 
@@ -48,7 +52,7 @@ class UserService {
         const newUser = await userRepository.create({
             ...data,
             password: hashedPassword,
-            roleId
+            roleId,
         });
 
         const { password, ...userWithoutPassword } = newUser;
@@ -72,13 +76,13 @@ class UserService {
         }
 
         const token = jwt.sign(
-            { 
-                id: user.id, 
+            {
+                id: user.id,
                 email: user.email,
-                roleId: fullUser.role?.id 
+                roleId: fullUser.role?.id,
             },
             ENV.JWT_SECRET,
-            { expiresIn: '24h' }
+            { expiresIn: '24h' },
         );
 
         return {
@@ -87,8 +91,8 @@ class UserService {
                 id: fullUser.id,
                 name: fullUser.name,
                 email: fullUser.email,
-                role: fullUser.role
-            }
+                role: fullUser.role,
+            },
         };
     }
 

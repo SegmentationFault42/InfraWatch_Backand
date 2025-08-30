@@ -11,10 +11,10 @@ export const LoginSwaggerSchema = {
                 format: 'email',
                 description: 'E-mail do usuário',
             },
-            password: { 
-                type: 'string', 
+            password: {
+                type: 'string',
                 description: 'Senha do usuário',
-                minLength: 1
+                minLength: 1,
             },
         },
         required: ['email', 'password'],
@@ -25,11 +25,17 @@ export const LoginSwaggerSchema = {
             type: 'object',
             properties: {
                 success: { type: 'boolean', example: true },
-                message: { type: 'string', example: 'Login realizado com sucesso' },
+                message: {
+                    type: 'string',
+                    example: 'Login realizado com sucesso',
+                },
                 data: {
                     type: 'object',
                     properties: {
-                        token: { type: 'string', description: 'JWT do usuário' },
+                        token: {
+                            type: 'string',
+                            description: 'JWT do usuário',
+                        },
                         user: {
                             type: 'object',
                             properties: {
@@ -41,19 +47,21 @@ export const LoginSwaggerSchema = {
                                     properties: {
                                         id: { type: 'string', format: 'uuid' },
                                         nome: { type: 'string' },
-                                        description: { type: ['string', 'null'] }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                                        description: {
+                                            type: ['string', 'null'],
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
             },
         },
         400: {
             description: 'Dados inválidos',
             type: 'object',
-            properties: { 
+            properties: {
                 success: { type: 'boolean', example: false },
                 message: { type: 'string', example: 'Dados inválidos' },
                 errors: {
@@ -62,27 +70,30 @@ export const LoginSwaggerSchema = {
                         type: 'object',
                         properties: {
                             field: { type: 'string' },
-                            message: { type: 'string' }
-                        }
-                    }
-                }
+                            message: { type: 'string' },
+                        },
+                    },
+                },
             },
         },
         401: {
             description: 'Credenciais inválidas',
             type: 'object',
-            properties: { 
+            properties: {
                 success: { type: 'boolean', example: false },
                 message: { type: 'string', example: 'Credenciais inválidas' },
-                code: { type: 'string', example: 'UNAUTHORIZED' }
+                code: { type: 'string', example: 'UNAUTHORIZED' },
             },
         },
         500: {
             description: 'Erro interno do servidor',
             type: 'object',
-            properties: { 
+            properties: {
                 success: { type: 'boolean', example: false },
-                message: { type: 'string', example: 'Erro interno do servidor' }
+                message: {
+                    type: 'string',
+                    example: 'Erro interno do servidor',
+                },
             },
         },
     },
@@ -94,26 +105,28 @@ export const CreateUserSwaggerSchema = {
     body: {
         type: 'object',
         properties: {
-            name: { 
-                type: 'string', 
+            name: {
+                type: 'string',
                 minLength: 1,
                 maxLength: 100,
-                description: 'Nome completo do usuário'
+                description: 'Nome completo do usuário',
             },
-            email: { 
-                type: 'string', 
+            email: {
+                type: 'string',
                 format: 'email',
-                description: 'E-mail único do usuário'
+                description: 'E-mail único do usuário',
             },
-            password: { 
+            password: {
                 type: 'string',
                 minLength: 8,
-                description: 'Senha com pelo menos 8 caracteres, contendo maiúscula, minúscula, número e caractere especial'
+                description:
+                    'Senha com pelo menos 8 caracteres, contendo maiúscula, minúscula, número e caractere especial',
             },
             roleId: {
                 type: 'string',
                 format: 'uuid',
-                description: 'ID da role do usuário (opcional, padrão será viewer)',
+                description:
+                    'ID da role do usuário (opcional, padrão será viewer)',
             },
         },
         required: ['name', 'email', 'password'],
@@ -124,7 +137,10 @@ export const CreateUserSwaggerSchema = {
             type: 'object',
             properties: {
                 success: { type: 'boolean', example: true },
-                message: { type: 'string', example: 'Usuário criado com sucesso' },
+                message: {
+                    type: 'string',
+                    example: 'Usuário criado com sucesso',
+                },
                 data: {
                     type: 'object',
                     properties: {
@@ -139,17 +155,17 @@ export const CreateUserSwaggerSchema = {
                             properties: {
                                 id: { type: 'string', format: 'uuid' },
                                 nome: { type: 'string' },
-                                description: { type: ['string', 'null'] }
-                            }
-                        }
-                    }
-                }
+                                description: { type: ['string', 'null'] },
+                            },
+                        },
+                    },
+                },
             },
         },
         400: {
             description: 'Dados inválidos',
             type: 'object',
-            properties: { 
+            properties: {
                 success: { type: 'boolean', example: false },
                 message: { type: 'string', example: 'Dados inválidos' },
                 errors: {
@@ -158,27 +174,33 @@ export const CreateUserSwaggerSchema = {
                         type: 'object',
                         properties: {
                             field: { type: 'string' },
-                            message: { type: 'string' }
-                        }
-                    }
-                }
+                            message: { type: 'string' },
+                        },
+                    },
+                },
             },
         },
         409: {
             description: 'Conflito - Usuário já existe',
             type: 'object',
-            properties: { 
+            properties: {
                 success: { type: 'boolean', example: false },
-                message: { type: 'string', example: 'Usuário já existe com este email' },
-                code: { type: 'string', example: 'CONFLICT' }
+                message: {
+                    type: 'string',
+                    example: 'Usuário já existe com este email',
+                },
+                code: { type: 'string', example: 'CONFLICT' },
             },
         },
         500: {
             description: 'Erro interno do servidor',
             type: 'object',
-            properties: { 
+            properties: {
                 success: { type: 'boolean', example: false },
-                message: { type: 'string', example: 'Erro interno do servidor' }
+                message: {
+                    type: 'string',
+                    example: 'Erro interno do servidor',
+                },
             },
         },
     },
@@ -193,10 +215,10 @@ export const GetUserSwaggerSchema = {
             id: {
                 type: 'string',
                 format: 'uuid',
-                description: 'ID único do usuário'
-            }
+                description: 'ID único do usuário',
+            },
         },
-        required: ['id']
+        required: ['id'],
     },
     response: {
         200: {
@@ -218,36 +240,39 @@ export const GetUserSwaggerSchema = {
                             properties: {
                                 id: { type: 'string', format: 'uuid' },
                                 nome: { type: 'string' },
-                                description: { type: ['string', 'null'] }
-                            }
-                        }
-                    }
-                }
+                                description: { type: ['string', 'null'] },
+                            },
+                        },
+                    },
+                },
             },
         },
         400: {
             description: 'ID inválido',
             type: 'object',
-            properties: { 
+            properties: {
                 success: { type: 'boolean', example: false },
-                message: { type: 'string', example: 'ID inválido' }
+                message: { type: 'string', example: 'ID inválido' },
             },
         },
         404: {
             description: 'Usuário não encontrado',
             type: 'object',
-            properties: { 
+            properties: {
                 success: { type: 'boolean', example: false },
                 message: { type: 'string', example: 'Usuário não encontrado' },
-                code: { type: 'string', example: 'NOT_FOUND' }
+                code: { type: 'string', example: 'NOT_FOUND' },
             },
         },
         500: {
             description: 'Erro interno do servidor',
             type: 'object',
-            properties: { 
+            properties: {
                 success: { type: 'boolean', example: false },
-                message: { type: 'string', example: 'Erro interno do servidor' }
+                message: {
+                    type: 'string',
+                    example: 'Erro interno do servidor',
+                },
             },
         },
     },

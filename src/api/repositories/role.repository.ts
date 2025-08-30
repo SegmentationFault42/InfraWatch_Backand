@@ -9,24 +9,24 @@ type CreateRoleData = {
 class RoleRepository {
     async findAll(): Promise<Role[]> {
         return await prisma.role.findMany({
-            orderBy: { nome: 'asc' }
+            orderBy: { nome: 'asc' },
         });
     }
 
     async findById(id: string): Promise<Role | null> {
         return await prisma.role.findUnique({
-            where: { id }
+            where: { id },
         });
     }
 
     async findByName(nome: string): Promise<Role | null> {
         return await prisma.role.findFirst({
-            where: { 
+            where: {
                 nome: {
                     equals: nome,
-                    mode: 'insensitive'
-                }
-            }
+                    mode: 'insensitive',
+                },
+            },
         });
     }
 
@@ -36,11 +36,11 @@ class RoleRepository {
 
     async getDefaultViewerRole(): Promise<Role> {
         let viewerRole = await this.findByName('viewer');
-        
+
         if (!viewerRole) {
             viewerRole = await this.create({
                 nome: 'viewer',
-                description: 'Role padrão para visualização'
+                description: 'Role padrão para visualização',
             });
         }
 

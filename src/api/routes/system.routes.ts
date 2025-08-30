@@ -10,18 +10,21 @@ import {
 import { verifyJWT } from '../middleware/verifyJWT';
 
 export function SystemRoutes(fastify: FastifyInstance) {
-    fastify.post('/hosts/create',{ schema: CreateSystemSwaggerSchema, /*preHandler: verifyJWT*/ },(req, res)=>{
-        systemController.addSystem(req, res)
-    }
+    fastify.post(
+        '/hosts/create',
+        { schema: CreateSystemSwaggerSchema /*preHandler: verifyJWT*/ },
+        (req, res) => {
+            systemController.addSystem(req, res);
+        },
     );
     fastify.get(
         '/hosts',
-        { schema: GetAllSystemsSwaggerSchema, preHandler: verifyJWT },
+        { schema: GetAllSystemsSwaggerSchema /*preHandler: verifyJWT*/ },
         systemController.getAllSystems,
     );
     fastify.get(
         '/hosts/:id',
-        { schema: GetSystemByIdSwaggerSchema, preHandler: verifyJWT },
+        { schema: GetSystemByIdSwaggerSchema /*preHandler: verifyJWT */ },
         systemController.getSystemById,
     );
     fastify.delete(
