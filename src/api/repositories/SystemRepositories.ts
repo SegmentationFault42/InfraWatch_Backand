@@ -133,6 +133,16 @@ class SystemRepository {
             throw ErrorFactory.systemUpdateFailed({ originalError: error });
         }
     }
+     async updateSystemStatus(
+            systemId: string,
+            status: 'up' | 'down' | 'warning' | 'unknown',
+        ): Promise<void> {
+            console.log("aaaaaaaaaaaaaaaaaaaaaaaa")
+            await prisma.system.update({
+                where: { id: systemId },
+                data: { status, updatedAt: new Date() },
+            });
+        }
 }
 
 export const systemRepository = new SystemRepository();

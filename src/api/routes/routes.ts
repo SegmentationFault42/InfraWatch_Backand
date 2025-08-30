@@ -5,6 +5,7 @@ import { pingRoutes } from './ping.routes';
 import { userRoutes } from './user.routes';
 import { SystemRoutes } from './system.routes';
 import { auditLogPlugin } from '../middleware/AuditLogMiddleware';
+import { snmpRoutes } from './snmp-routes';
 
 export async function Routes(app: FastifyInstance) {
     await app.register(auditLogPlugin);
@@ -12,4 +13,5 @@ export async function Routes(app: FastifyInstance) {
     app.register(pingRoutes);
     app.register(userRoutes);
     app.register(SystemRoutes);
+    app.register(snmpRoutes)
 }

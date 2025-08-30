@@ -1,63 +1,9 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { SnmpService } from '../services/snmp-service';
+import { snmpservice } from '../services/snmp-service';
 import { SnmpError } from '../errors/snmp-errors';
 
-export class SnmpController {
-    constructor(private snmpService: SnmpService) {}
-
-    // GET /snmp/systems
-    getAllSnmpSystems = async (
-        request: FastifyRequest,
-        reply: FastifyReply,
-    ) => {
-        try {
-            const systems = await this.snmpService.getAllSnmpSystems();
-
-            reply.send({
-                success: true,
-                data: systems,
-                count: systems.length,
-            });
-        } catch (error) {
-            this.handleError(reply, error);
-        }
-    };
-
-    // GET /snmp/systems/:id
-    getSnmpSystemById = async (
-        request: FastifyRequest<{ Params: { id: string } }>,
-        reply: FastifyReply,
-    ) => {
-        try {
-            const { id } = request.params;
-            const system = await this.snmpService.getSnmpSystemById(id);
-
-            reply.send({
-                success: true,
-                data: system,
-            });
-        } catch (error) {
-            this.handleError(reply, error);
-        }
-    };
-
-    // GET /snmp/systems/:id/status
-    getSnmpSystemStatus = async (
-        request: FastifyRequest<{ Params: { id: string } }>,
-        reply: FastifyReply,
-    ) => {
-        try {
-            const { id } = request.params;
-            const status = await this.snmpService.getSystemStatus(id);
-
-            reply.send({
-                success: true,
-                data: status,
-            });
-        } catch (error) {
-            this.handleError(reply, error);
-        }
-    };
+class SnmpController {
+   
 
     // POST /snmp/systems/:id/test
     testSnmpConnection = async (
@@ -66,7 +12,7 @@ export class SnmpController {
     ) => {
         try {
             const { id } = request.params;
-            const result = await this.snmpService.testSnmpConnection(id);
+            const result = await snmpservice.testSnmpConnection(id);
 
             reply.send({
                 success: true,
@@ -85,7 +31,7 @@ export class SnmpController {
     ) => {
         try {
             const { id } = request.params;
-            const result = await this.snmpService.monitorSnmpSystem(id);
+            const result = await snmpservice.monitorSnmpSystem(id);
 
             reply.send({
                 success: true,
@@ -103,7 +49,7 @@ export class SnmpController {
         reply: FastifyReply,
     ) => {
         try {
-            const results = await this.snmpService.monitorAllSnmpSystems();
+            const results = await snmpservice.monitorAllSnmpSystems();
             const total = Object.keys(results).length;
             const up = Object.values(results).filter(
                 (r) => r.status === 'up',
@@ -135,19 +81,6 @@ export class SnmpController {
         }
     };
 
-    // GET /snmp/dashboard
-    getSnmpDashboard = async (request: FastifyRequest, reply: FastifyReply) => {
-        try {
-            const dashboard = await this.snmpService.getSnmpDashboard();
-
-            reply.send({
-                success: true,
-                data: dashboard,
-            });
-        } catch (error) {
-            this.handleError(reply, error);
-        }
-    };
 
     // GET /snmp/systems/:id/metrics
     getSnmpSystemMetrics = async (
@@ -164,20 +97,18 @@ export class SnmpController {
             let metrics;
 
             if (from || to) {
-                // Buscar por período
                 const fromDate = from
                     ? new Date(from)
                     : new Date(Date.now() - 24 * 60 * 60 * 1000);
                 const toDate = to ? new Date(to) : new Date();
-                metrics = await this.snmpService.getSystemMetrics(
+                metrics = await snmpservice.getSystemMetrics(
                     id,
                     fromDate,
                     toDate,
                 );
             } else {
-                // Buscar últimas métricas
                 const limitNum = limit ? parseInt(limit) : 50;
-                metrics = await this.snmpService.getSystemLastMetrics(
+                metrics = await snmpservice.getSystemLastMetrics(
                     id,
                     limitNum,
                 );
@@ -232,3 +163,5 @@ export class SnmpController {
         });
     }
 }
+
+export const snmpcontroller = new SnmpController()

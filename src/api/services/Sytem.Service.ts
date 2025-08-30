@@ -43,6 +43,7 @@ class SystemService {
 
         return await systemRepository.updateSystemById(id, data);
     }
+    
 }
 
 export const systemService = new SystemService();

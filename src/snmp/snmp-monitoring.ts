@@ -12,12 +12,11 @@ export class SnmpMonitor {
 
     constructor(private config: SnmpConfig) {}
 
-    // ... resto do código permanece igual ...
-
     async check(): Promise<SnmpResult> {
         const startTime = Date.now();
 
         try {
+            console.log("chegou")
             await this.createSession();
             const values = await this.queryOids();
             const responseTime = Date.now() - startTime;
@@ -30,13 +29,13 @@ export class SnmpMonitor {
             };
         } catch (error) {
             const responseTime = Date.now() - startTime;
-
+            console.log("erro")
             return {
-                status: 'down', // ✅ Manter 'down' para erros reais
+                status: 'down', 
                 timestamp: new Date(),
                 responseTime,
                 values: {},
-                error: error instanceof Error ? error.message : 'Unknown error',
+                error: 'Unknown error',
             };
         } finally {
             this.closeSession();

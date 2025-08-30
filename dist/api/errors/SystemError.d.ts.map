@@ -1,0 +1,1 @@
+{"version":3,"file":"SystemError.d.ts","sourceRoot":"","sources":["../../../src/api/errors/SystemError.ts"],"names":[],"mappings":"AAAA,qBAAa,WAAY,SAAQ,KAAK;IAClC,SAAgB,IAAI,EAAE,MAAM,CAAC;IAC7B,SAAgB,UAAU,EAAE,MAAM,CAAC;IACnC,SAAgB,OAAO,CAAC,EAAE,GAAG,CAAC;gBAG1B,IAAI,EAAE,MAAM,EACZ,OAAO,EAAE,MAAM,EACf,UAAU,GAAE,MAAY,EACxB,OAAO,CAAC,EAAE,GAAG;CAapB"}

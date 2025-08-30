@@ -1,22 +1,21 @@
-import { SnmpRepository } from '../repositories/snmp-repository';
+import { snmprepository } from '../repositories/snmp-repository';
 import type {
     SnmpResult,
     SystemWithSnmp,
     SnmpMetrics,
-    SnmpDashboard,
 } from '../types/snmp-types';
-import { SnmpError } from '../errors/snmp-errors';
 import { SnmpMonitor } from '../../snmp/snmp-monitoring';
+import { systemRepository } from '../repositories/SystemRepositories';
+import { alertRepository } from '../repositories/alert.repository';
 
 export class SnmpService {
-    constructor(private repository: SnmpRepository) {}
 
     async getAllSnmpSystems(): Promise<SystemWithSnmp[]> {
-        return await this.repository.findAllSnmpSystems();
+        return await snmprepository.findAllSnmpSystems();
     }
 
     async getSnmpSystemById(id: string): Promise<SystemWithSnmp> {
-        const system = await this.repository.findSnmpSystemById(id);
+        const system = await snmprepository.findSnmpSystemById(id);
 
         if (!system) {
             throw new Error(`Sistema SNMP com ID ${id} não encontrado`);
@@ -36,7 +35,7 @@ export class SnmpService {
             throw new Error('Sistema não possui monitores SNMP configurados');
         }
 
-        const monitor = system.monitors[0]; // Agora garantido que existe
+        const monitor = system.monitors[0]; 
         const snmpMonitor = new SnmpMonitor(monitor.config);
 
         return await snmpMonitor.check();
@@ -56,18 +55,20 @@ export class SnmpService {
         const result = await snmpMonitor.check();
         if (result.status === 'up') {
             const metrics = this.convertToMetrics(systemId, result);
-            await this.repository.saveMetrics(metrics);
+            await snmprepository.saveMetrics(metrics);
+			
         }
-        await this.repository.updateSystemStatus(systemId, result.status);
-
+		else if (result.status === 'down' && system.status !== 'down')
+		{
+			alertRepository.createAlertForSNMP(systemId, `Sistema no estado Down`, `O sistema ${system.name} está no estado Down`)
+		}
+        await systemRepository.updateSystemStatus(systemId, result.status);
         return result;
     }
 
     async monitorAllSnmpSystems(): Promise<Record<string, SnmpResult>> {
         const systems = await this.getAllSnmpSystems();
         const results: Record<string, SnmpResult> = {};
-
-        // Executar em paralelo com limite de 5 simultâneos
         const batches = this.chunkArray(systems, 5);
 
         for (const batch of batches) {
@@ -77,9 +78,8 @@ export class SnmpService {
                         system.id,
                     );
                 } catch (error) {
-                    // ✅ Usar SnmpResult completo para erro
                     results[system.id] = {
-                        status: 'unknown', // ✅ Agora 'unknown' é válido
+                        status: 'unknown', 
                         timestamp: new Date(),
                         responseTime: 0,
                         values: {},
@@ -97,45 +97,7 @@ export class SnmpService {
         return results;
     }
 
-    async getSnmpDashboard(): Promise<SnmpDashboard> {
-        const systems = await this.getAllSnmpSystems();
-        const results = await this.monitorAllSnmpSystems();
-
-        const upSystems = Object.values(results).filter(
-            (r) => r.status === 'up',
-        ).length;
-        const downSystems = Object.values(results).filter(
-            (r) => r.status === 'down',
-        ).length;
-        const warningSystems = Object.values(results).filter(
-            (r) => r.status === 'warning',
-        ).length;
-
-        return {
-            summary: {
-                total_systems: systems.length,
-                up_systems: upSystems,
-                down_systems: downSystems,
-                warning_systems: warningSystems,
-                overall_uptime:
-                    systems.length > 0
-                        ? Math.round((upSystems / systems.length) * 100)
-                        : 0,
-            },
-            systems: systems.map((system) => ({
-                ...system,
-                // ✅ Fallback usando SnmpResult com 'unknown'
-                current_status: results[system.id] || {
-                    status: 'unknown' as const,
-                    timestamp: new Date(),
-                    responseTime: 0,
-                    values: {},
-                    error: 'Status não disponível',
-                },
-            })),
-        };
-    }
-
+    
     async getSystemMetrics(
         systemId: string,
         from: Date,
@@ -144,7 +106,7 @@ export class SnmpService {
         // Verificar se o sistema SNMP existe
         await this.getSnmpSystemById(systemId);
 
-        return await this.repository.getMetricsHistory(systemId, from, to);
+        return await snmprepository.getMetricsHistory(systemId, from, to);
     }
 
     async getSystemLastMetrics(
@@ -154,7 +116,7 @@ export class SnmpService {
         // Verificar se o sistema SNMP existe
         await this.getSnmpSystemById(systemId);
 
-        return await this.repository.getLastMetrics(systemId, limit);
+        return await snmprepository.getLastMetrics(systemId, limit);
     }
 
     async getSystemStatus(systemId: string): Promise<{
@@ -192,7 +154,6 @@ export class SnmpService {
         };
     }
 
-    // ✅ Helper para mapear status para número
     private mapStatusToNumber(status: SnmpResult['status']): number {
         switch (status) {
             case 'up':
@@ -290,3 +251,5 @@ export class SnmpService {
         return chunks;
     }
 }
+
+export const snmpservice = new SnmpService()

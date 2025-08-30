@@ -1,21 +1,16 @@
-import { PrismaClient } from '@prisma/client';
-import { PrismaClient as TimeseriesClient } from '../../../node_modules/.prisma/client-timeseries';
+import { timeseries , prisma} from '../../config/database';
 import type {
     SnmpConfig,
     SnmpMetrics,
     SystemWithSnmp,
 } from '../types/snmp-types';
 
-export class SnmpRepository {
-    constructor(
-        private prisma: PrismaClient,
-        private timeseries: TimeseriesClient,
-    ) {}
-
+class SnmpRepository {
+    
     // ... resto do código ...
 
     async findSnmpSystemById(id: string): Promise<SystemWithSnmp | null> {
-        const system = await this.prisma.system.findUnique({
+        const system = await prisma.system.findUnique({
             where: { id },
             include: {
                 monitors: {
@@ -39,7 +34,7 @@ export class SnmpRepository {
     }
 
     async findAllSnmpSystems(): Promise<SystemWithSnmp[]> {
-        const systems = await this.prisma.system.findMany({
+        const systems = await prisma.system.findMany({
             include: {
                 monitors: {
                     where: { type: 'SNMP' },
@@ -47,22 +42,20 @@ export class SnmpRepository {
             },
         });
 
-        return (
-            systems
-                .filter((system) => system.monitors.length > 0)
-                .map((system) => ({
-                    ...system,
-                    monitors: system.monitors.map((monitor) => ({
-                        id: monitor.id,
-                        type: 'SNMP' as const,
-                        config: monitor.config as unknown as SnmpConfig, // ✅ Cast explícito
-                        interval: monitor.interval || 120,
-                    })),
-                }))
-        );
+        return systems
+            .filter((system) => system.monitors.length > 0)
+            .map((system) => ({
+                ...system,
+                monitors: system.monitors.map((monitor) => ({
+                    id: monitor.id,
+                    type: 'SNMP' as const,
+                    config: monitor.config as unknown as SnmpConfig, // ✅ Cast explícito
+                    interval: monitor.interval || 120,
+                })),
+            }));
     }
     async saveMetrics(metrics: SnmpMetrics): Promise<void> {
-        await this.timeseries.snmpMetrics.create({
+        await timeseries.snmpMetrics.create({
             data: {
                 time: metrics.time,
                 deviceId: metrics.deviceId,
@@ -77,22 +70,13 @@ export class SnmpRepository {
         });
     }
 
-    async updateSystemStatus(
-        systemId: string,
-        status: 'up' | 'down' | 'warning' | 'unknown',
-    ): Promise<void> {
-        await this.prisma.system.update({
-            where: { id: systemId },
-            data: { status, updatedAt: new Date() },
-        });
-    }
 
     async getMetricsHistory(
         deviceId: string,
         from: Date,
         to: Date,
     ): Promise<SnmpMetrics[]> {
-        const metrics = await this.timeseries.snmpMetrics.findMany({
+        const metrics = await timeseries.snmpMetrics.findMany({
             where: {
                 deviceId,
                 time: {
@@ -101,7 +85,7 @@ export class SnmpRepository {
                 },
             },
             orderBy: { time: 'desc' },
-            take: 1000, 
+            take: 1000,
         });
 
         return metrics.map((m) => ({
@@ -121,7 +105,7 @@ export class SnmpRepository {
         deviceId: string,
         limit: number = 10,
     ): Promise<SnmpMetrics[]> {
-        const metrics = await this.timeseries.snmpMetrics.findMany({
+        const metrics = await timeseries.snmpMetrics.findMany({
             where: { deviceId },
             orderBy: { time: 'desc' },
             take: limit,
@@ -140,3 +124,5 @@ export class SnmpRepository {
         }));
     }
 }
+
+export const snmprepository = new SnmpRepository()
