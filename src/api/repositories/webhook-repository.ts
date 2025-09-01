@@ -21,7 +21,6 @@ class WebhookRepository {
         id: monitor.id,
         type: 'WEBHOOK' as const,
         config: monitor.config as unknown as WebhookConfig,
-        enabled: monitor.enabled,
       })),
     };
   }
@@ -43,7 +42,6 @@ class WebhookRepository {
           id: monitor.id,
           type: 'WEBHOOK' as const,
           config: monitor.config as unknown as WebhookConfig,
-          enabled: monitor.enabled,
         })),
       }));
   }

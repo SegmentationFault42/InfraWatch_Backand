@@ -1,1 +1,0 @@
-{"version":3,"file":"auditLogRepository.js","sourceRoot":"","sources":["../../../src/api/repositories/auditLogRepository.ts"],"names":[],"mappings":";;;AACA,oDAA+C;AAE/C,MAAM,kBAAkB;IACpB,KAAK,CAAC,SAAS,CACX,IAA6D;QAE7D,OAAO,iBAAM,CAAC,UAAU,CAAC,MAAM,CAAC,EAAE,IAAI,EAAE,CAAC,CAAC;IAC9C,CAAC;CACJ;AAEY,QAAA,kBAAkB,GAAG,IAAI,kBAAkB,EAAE,CAAC"}

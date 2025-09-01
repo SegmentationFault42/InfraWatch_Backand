@@ -1,1 +1,0 @@
-{"version":3,"file":"status.service.js","sourceRoot":"","sources":["../../../src/api/services/status.service.ts"],"names":[],"mappings":";;AAAA,MAAM,aAAa;IACf,SAAS;QACL,OAAO;YACH,MAAM,EAAE,IAAI;YACZ,MAAM,EAAE,OAAO,CAAC,MAAM,EAAE;YACxB,SAAS,EAAE,IAAI,IAAI,EAAE,CAAC,WAAW,EAAE;SACtC,CAAC;IACN,CAAC;CACJ;AAED,kBAAe,IAAI,aAAa,EAAE,CAAC"}

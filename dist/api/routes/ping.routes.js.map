@@ -1,1 +1,0 @@
-{"version":3,"file":"ping.routes.js","sourceRoot":"","sources":["../../../src/api/routes/ping.routes.ts"],"names":[],"mappings":";;AAKA,gCAMC;AAVD,oEAAgE;AAChE,uDAAwD;AAGjD,KAAK,UAAU,UAAU,CAAC,OAAwB;IACrD,OAAO,CAAC,GAAG,CAAC,aAAa,EAAE;QACvB,MAAM,EAAE,6BAAe;QACvB,wBAAwB;QACxB,OAAO,EAAE,gCAAc;KAC1B,CAAC,CAAC;AACP,CAAC"}

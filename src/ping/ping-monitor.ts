@@ -73,7 +73,7 @@ export class PingMonitor {
     const lossLine = lines.find(line => line.includes('Lost'));
     if (lossLine) {
       const lossMatch = lossLine.match(/\((\d+)%\s+loss\)/);
-      if (lossMatch) {
+      if (lossMatch && lossMatch[1]) {
         packetLoss = parseInt(lossMatch[1]);
       }
     }
@@ -82,8 +82,8 @@ export class PingMonitor {
     const timeLine = lines.find(line => line.includes('Average'));
     if (timeLine) {
       const timeMatch = timeLine.match(/Average\s+=\s+(\d+)ms/);
-      if (timeMatch) {
-        avgTime = parseInt(timeMatch[1]);
+      if (timeMatch && timeMatch[1]) {
+        avgTime = parseInt(timeMatch[1] );
       }
     }
 
@@ -99,7 +99,7 @@ export class PingMonitor {
     const lossLine = lines.find(line => line.includes('packet loss'));
     if (lossLine) {
       const lossMatch = lossLine.match(/(\d+)%\s+packet\s+loss/);
-      if (lossMatch) {
+      if (lossMatch && lossMatch[1]) {
         packetLoss = parseInt(lossMatch[1]);
       }
     }
@@ -108,8 +108,8 @@ export class PingMonitor {
     const timeLine = lines.find(line => line.includes('rtt'));
     if (timeLine) {
       const timeMatch = timeLine.match(/=\s+[\d.]+\/([\d.]+)\//);
-      if (timeMatch) {
-        avgTime = parseFloat(timeMatch[1]);
+      if (timeMatch && timeMatch[1]) {
+        avgTime = parseFloat(timeMatch[1] );
       }
     }
 

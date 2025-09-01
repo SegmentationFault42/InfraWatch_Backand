@@ -45,6 +45,7 @@ export class PingService {
     const result = await pingMonitor.check();
 
     if (result.status === 'up') {
+      console.log(result)
       const metrics = this.convertToMetrics(systemId, result);
       await pingRepository.saveMetrics(metrics);
     } else if (result.status === 'down' && system.status !== 'down') {

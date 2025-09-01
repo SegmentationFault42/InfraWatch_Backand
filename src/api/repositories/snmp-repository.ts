@@ -6,10 +6,7 @@ import type {
 } from '../types/snmp-types';
 
 class SnmpRepository {
-    
-    // ... resto do código ...
-
-    async findSnmpSystemById(id: string): Promise<SystemWithSnmp | null> {
+   async findSnmpSystemById(id: string): Promise<SystemWithSnmp | null> {
         const system = await prisma.system.findUnique({
             where: { id },
             include: {
@@ -19,7 +16,7 @@ class SnmpRepository {
             },
         });
 
-        // ✅ Verificar se sistema existe E tem monitores SNMP
+        
         if (!system || system.monitors.length === 0) return null;
 
         return {
@@ -27,7 +24,7 @@ class SnmpRepository {
             monitors: system.monitors.map((monitor) => ({
                 id: monitor.id,
                 type: 'SNMP' as const,
-                config: monitor.config as unknown as SnmpConfig, // ✅ Cast explícito
+                config: monitor.config as unknown as SnmpConfig,
                 interval: monitor.interval || 120,
             })),
         };

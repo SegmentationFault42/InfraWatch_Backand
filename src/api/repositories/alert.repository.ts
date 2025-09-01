@@ -23,6 +23,17 @@ class AlertRepository{
             }
         })
     }
+    async createAlertForAPI(systemId: string, title: string, message: string)
+    {
+        return await prisma.alerts.create({
+            data: {
+                systemId,
+                title,
+                message,
+                severity: "critical"
+            }
+        })
+    }
 }
 
 export const alertRepository = new AlertRepository()

@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify';
 
 import statusRoutes from './status.routes';
-import { pingRoutes } from './ping.routes';
+import { pingRoutes } from './ping-routes';
 import { userRoutes } from './user.routes';
 import { SystemRoutes } from './system.routes';
 import { auditLogPlugin } from '../middleware/AuditLogMiddleware';

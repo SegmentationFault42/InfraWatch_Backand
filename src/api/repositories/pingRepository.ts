@@ -1,4 +1,5 @@
 // src/repositories/ping-repository.ts
+
 import { prisma, timeseries } from '../../config/database';
 import type { SystemWithPing, PingMetrics, PingConfig } from '../types/ping-types';
 
@@ -21,8 +22,7 @@ class PingRepository {
         id: monitor.id,
         type: 'PING' as const,
         config: monitor.config as unknown as PingConfig,
-        interval: monitor.interval || 60,
-        enabled: monitor.enabled,
+        interval: monitor.interval || 60
       })),
     };
   }
@@ -44,8 +44,7 @@ class PingRepository {
           id: monitor.id,
           type: 'PING' as const,
           config: monitor.config as unknown as PingConfig,
-          interval: monitor.interval || 60,
-          enabled: monitor.enabled,
+          interval: monitor.interval || 60
         })),
       }));
   }
@@ -56,7 +55,6 @@ class PingRepository {
         time: metrics.time,
         deviceId: metrics.systemId,
         ip: metrics.host,
-        latency: metrics.latency,
         packetLoss: metrics.packetLoss,
         status: metrics.status,
       },
@@ -70,7 +68,7 @@ class PingRepository {
   ): Promise<PingMetrics[]> {
     const metrics = await timeseries.pingMetrics.findMany({
       where: {
-        systemId,
+        deviceId:  systemId,
         time: {
           gte: from,
           lte: to,
@@ -80,7 +78,7 @@ class PingRepository {
       take: 1000,
     });
 
-    return metrics.map(m => ({
+    return metrics.map((m:any) => ({
       time: m.time,
       systemId: m.systemId,
       host: m.host,
@@ -92,12 +90,12 @@ class PingRepository {
 
   async getLastMetrics(systemId: string, limit: number = 10): Promise<PingMetrics[]> {
     const metrics = await timeseries.pingMetrics.findMany({
-      where: { systemId },
+      where: { deviceId: systemId },
       orderBy: { time: 'desc' },
       take: limit,
     });
 
-    return metrics.map(m => ({
+    return metrics.map((m: any) => ({
       time: m.time,
       systemId: m.systemId,
       host: m.host,
