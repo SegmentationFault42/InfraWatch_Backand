@@ -5,8 +5,10 @@ import { CreateSystemInput } from '../types/system.types';
 
 class SystemService {
     async addSystem(data: CreateSystemInput): Promise<System> {
-        const systemExists = await systemRepository.verifySystemIfExists(data.host);
-        
+        const systemExists = await systemRepository.verifySystemIfExists(
+            data.host,
+        );
+
         if (systemExists) {
             throw ErrorFactory.systemAlreadyExists();
         }
@@ -20,11 +22,11 @@ class SystemService {
 
     async getSystemById(id: string): Promise<System> {
         const system = await systemRepository.getSystemById(id);
-        
+
         if (!system) {
             throw ErrorFactory.systemNotFound();
         }
-        
+
         return system;
     }
 
@@ -34,7 +36,7 @@ class SystemService {
 
     async updateSystemById(id: string, data: Partial<System>): Promise<System> {
         const systemExists = await systemRepository.verifySystemExists(id);
-        
+
         if (!systemExists) {
             throw ErrorFactory.systemNotFound();
         }

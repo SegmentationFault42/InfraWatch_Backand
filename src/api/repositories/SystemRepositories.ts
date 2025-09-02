@@ -7,11 +7,13 @@ class SystemRepository {
     async verifySystemIfExists(host: string): Promise<System | null> {
         try {
             return await prisma.system.findFirst({
-                where: { host }
+                where: { host },
             });
         } catch (error) {
             console.error('Error verifying system existence:', error);
-            throw ErrorFactory.internalServerError({ originalError: error });
+            throw ErrorFactory.internalServerError({
+                originalError: error,
+            });
         }
     }
 
@@ -20,7 +22,7 @@ class SystemRepository {
             const systemData: Prisma.SystemCreateInput = {
                 name: data.name,
                 host: data.host,
-                alert_email: data.alert_email
+                alert_email: data.alert_email,
             };
 
             if (data.monitors?.length) {
@@ -28,19 +30,23 @@ class SystemRepository {
             }
 
             if (data.slaConfig) {
-                systemData.SLAConfig = { create: data.slaConfig };
+                systemData.SLAConfig = {
+                    create: data.slaConfig,
+                };
             }
 
             return await prisma.system.create({
                 data: systemData,
                 include: {
                     monitors: true,
-                    SLAConfig: true
-                }
+                    SLAConfig: true,
+                },
             });
         } catch (error) {
             console.error('Error creating system:', error);
-            throw ErrorFactory.systemCreateFailed({ originalError: error });
+            throw ErrorFactory.systemCreateFailed({
+                originalError: error,
+            });
         }
     }
 
@@ -56,18 +62,20 @@ class SystemRepository {
                             id: true,
                             type: true,
                             config: true,
-                            interval: true
-                        }
+                            interval: true,
+                        },
                     },
                     status: true,
                     alert_email: true,
                     createdAt: true,
-                    updatedAt: true
-                }
+                    updatedAt: true,
+                },
             });
         } catch (error) {
             console.error('Error fetching all systems:', error);
-            throw ErrorFactory.internalServerError({ originalError: error });
+            throw ErrorFactory.internalServerError({
+                originalError: error,
+            });
         }
     }
 
@@ -77,23 +85,28 @@ class SystemRepository {
                 where: { id },
                 include: {
                     monitors: true,
-                    SLAConfig: true
-                }
+                    SLAConfig: true,
+                },
             });
         } catch (error) {
             console.error('Error fetching system by ID:', error);
-            throw ErrorFactory.internalServerError({ originalError: error });
+            throw ErrorFactory.internalServerError({
+                originalError: error,
+            });
         }
     }
 
     async deleteSystemById(id: string): Promise<void> {
         try {
             await prisma.system.delete({
-                where: { id }
+                where: { id },
             });
         } catch (error) {
             console.error('Error deleting system:', error);
-            if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+            if (
+                error instanceof Prisma.PrismaClientKnownRequestError &&
+                error.code === 'P2025'
+            ) {
                 throw ErrorFactory.systemNotFound();
             }
             throw ErrorFactory.systemDeleteFailed();
@@ -104,12 +117,14 @@ class SystemRepository {
         try {
             const system = await prisma.system.findFirst({
                 where: { id },
-                select: { id: true }
+                select: { id: true },
             });
             return !!system;
         } catch (error) {
             console.error('Error verifying system:', error);
-            throw ErrorFactory.internalServerError({ originalError: error });
+            throw ErrorFactory.internalServerError({
+                originalError: error,
+            });
         }
     }
 
@@ -117,15 +132,30 @@ class SystemRepository {
         try {
             return await prisma.system.update({
                 where: { id },
-                data
+                data,
             });
         } catch (error) {
             console.error('Error updating system:', error);
-            if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+            if (
+                error instanceof Prisma.PrismaClientKnownRequestError &&
+                error.code === 'P2025'
+            ) {
                 throw ErrorFactory.systemNotFound();
             }
-            throw ErrorFactory.systemUpdateFailed({ originalError: error });
+            throw ErrorFactory.systemUpdateFailed({
+                originalError: error,
+            });
         }
+    }
+    async updateSystemStatus(
+        systemId: string,
+        status: 'up' | 'down' | 'warning' | 'unknown',
+    ): Promise<void> {
+        console.log('aaaaaaaaaaaaaaaaaaaaaaaa');
+        await prisma.system.update({
+            where: { id: systemId },
+            data: { status, updatedAt: new Date() },
+        });
     }
 }
 

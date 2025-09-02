@@ -31,8 +31,8 @@ export async function pingController(
             })),
         );
     } catch {
-        return reply
-            .status(504)
-            .send({ error: 'Ping request timed out or host unreachable' });
+        return reply.status(504).send({
+            error: 'Ping request timed out or host unreachable',
+        });
     }
 }

@@ -6,30 +6,55 @@ const passwordSchema = z
     .regex(/[A-Z]/, 'A senha deve conter pelo menos uma letra maiúscula')
     .regex(/[a-z]/, 'A senha deve conter pelo menos uma letra minúscula')
     .regex(/[0-9]/, 'A senha deve conter pelo menos um número')
-    .regex(/[^A-Za-z0-9]/, 'A senha deve conter pelo menos um caractere especial');
+    .regex(
+        /[^A-Za-z0-9]/,
+        'A senha deve conter pelo menos um caractere especial',
+    );
+
+const roleEnum = z.enum(['ADMIN', 'VIEWER', 'EDITOR']);
 
 class UserValidation {
     createUserSchema = z.object({
-        name: z.string().min(1, 'Nome é obrigatório').max(100, 'Nome muito longo'),
-        email: z.string().email({ message: 'E-mail inválido' }).toLowerCase().trim(),
+        name: z
+            .string()
+            .min(1, 'Nome é obrigatório')
+            .max(100, 'Nome muito longo'),
+        email: z
+            .string()
+            .email({ message: 'E-mail inválido' })
+            .toLowerCase()
+            .trim(),
         password: passwordSchema,
-        roleId: z.string().uuid('ID da role deve ser um UUID válido').optional(),
+        role: roleEnum,
     });
 
     loginUserSchema = z.object({
-        email: z.string().email({ message: 'E-mail inválido' }).toLowerCase().trim(),
+        email: z
+            .string()
+            .email({ message: 'E-mail inválido' })
+            .toLowerCase()
+            .trim(),
         password: z.string().min(1, 'Senha é obrigatória'),
     });
 
     updateUserSchema = z.object({
-        name: z.string().min(1, 'Nome é obrigatório').max(100, 'Nome muito longo').optional(),
-        email: z.string().email({ message: 'E-mail inválido' }).toLowerCase().trim().optional(),
+        name: z
+            .string()
+            .min(1, 'Nome é obrigatório')
+            .max(100, 'Nome muito longo')
+            .optional(),
+        email: z
+            .string()
+            .email({ message: 'E-mail inválido' })
+            .toLowerCase()
+            .trim()
+            .optional(),
         password: passwordSchema.optional(),
-        roleId: z.string().uuid('ID da role deve ser um UUID válido').optional(),
+        role: roleEnum.optional(),
     });
 
-    idSchema = z.object({
-        id: z.string().uuid('ID deve ser um UUID válido')
+    id = z.object({
+        id: z.string().uuid('ID deve ser um UUID válido'),
     });
 }
 

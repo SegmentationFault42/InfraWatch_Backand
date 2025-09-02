@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client-timeseries"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("TIMESERIES_DATABASE_URL")
+}
+
+model PingMetrics {
+  time        DateTime @db.Timestamptz()
+  deviceId    String   @map("device_id")
+  ip          String?  @db.Inet
+  latency     Int?
+  status      Int?
+  packetLoss  Float?   @map("packet_loss")
+  
+  @@id([time, deviceId])
+  @@map("ping_metrics")
+}
+
+model SnmpMetrics {
+  time          DateTime @db.Timestamptz()
+  deviceId      String   @map("device_id")
+  interfaceName String?  @map("interface_name")
+  inOctets      BigInt?  @map("in_octets")
+  outOctets     BigInt?  @map("out_octets")
+  cpu           Int?
+  memory        Int?
+  status        Int?
+  temperature   Int?
+  
+  @@id([time, deviceId])
+  @@map("snmp_metrics")
+}
+
+model ApiMetrics {
+  time           DateTime @db.Timestamptz()
+  deviceId       String   @map("device_id")
+  endpoint       String?
+  statusCode     Int?     @map("status_code")
+  responseTimeMs Int?     @map("response_time_ms")
+  payloadSize    Int?     @map("payload_size")
+  
+  @@id([time, deviceId])
+  @@map("api_metrics")
+}
+
+model MdtMetrics {
+  time          DateTime @db.Timestamptz()
+  deviceId      String   @map("device_id")
+  interfaceName String?  @map("interface_name")
+  cpu           Float?   @db.DoublePrecision
+  memory        Float?   @db.DoublePrecision
+  temperature   Float?   @db.DoublePrecision
+  trafficIn     BigInt?  @map("traffic_in")
+  trafficOut    BigInt?  @map("traffic_out")
+  status        Int?
+  
+  @@id([time, deviceId])
+  @@map("mdt_metrics")
+}

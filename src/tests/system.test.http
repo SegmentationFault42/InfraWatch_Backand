@@ -2,37 +2,50 @@ POST http://localhost:3333/hosts/create
 Content-Type: application/json
 
 {
-  "name": "Servidor de E-commerce",
-  "host": "ecommerce.loja.com",
-  "alert_email": "alertas@loja.com",
+  "name": "Servidor De Teste",
+  "host": "www.google.com",
+  "alert_email": "lausiowatela@gmail.com",
   "monitors": [
     {
-      "type": "API",
+      "type": "PING",
       "config": {
-        "url": "https://ecommerce.loja.com/api/health",
-        "method": "GET",
-        "headers": {
-          "Authorization": "Bearer token123",
-          "Content-Type": "application/json"
-        },
-        "timeout": 10000,
-        "expectedStatus": 200,
-        "expectedResponse": {
-          "status": "ok"
-        }
+        "host": "servidor.empresa.com",
+        "timeout": 5000,
+        "retries": 3,
+        "packetSize": 64
       },
-      "interval": 30
+      "interval": 60
+    },
+  
+    {
+      "type": "SNMP",
+      "config": {
+        "host": "servidor.empresa.com",
+        "port": 161,
+        "community": "public",
+        "version": "2c",
+        "oids": [
+          "1.3.6.1.2.1.1.3.0",
+          "1.3.6.1.2.1.25.1.1.0"
+        ],
+        "timeout": 5000
+      },
+      "interval": 120
     },
     {
       "type": "WEBHOOK",
       "config": {
-        "url": "https://webhook.site/unique-id",
+        "url": "https://infrawatch.site/unique-id-123",
         "method": "POST",
-        "payload": {
-          "source": "monitoring",
-          "timestamp": ""
+        "headers": {
+          "Content-Type": "application/json"
         },
-        "timeout": 5000
+        "payload": {
+          "source": "monitoring-system",
+          "timestamp": "1232",
+          "system": "servidor.empresa.com"
+        },
+        "timeout": 8000
       },
       "interval": 300
     }
