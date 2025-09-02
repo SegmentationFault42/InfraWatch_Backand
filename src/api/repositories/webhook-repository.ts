@@ -1,5 +1,5 @@
 // src/repositories/webhook-repository.ts
-import { prisma, timeseries } from '../../config/database';
+/*import { prisma, timeseries } from '../../config/database';
 import type {
     SystemWithWebhook,
     WebhookMetrics,
@@ -141,3 +141,4 @@ class WebhookRepository {
 }
 
 export const webhookRepository = new WebhookRepository();
+*/

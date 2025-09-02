@@ -1,5 +1,5 @@
 // src/services/webhook-service.ts
-import { webhookRepository } from '../repositories/webhook-repository';
+/*import { webhookRepository } from '../repositories/webhook-repository';
 import type {
     SystemWithWebhook,
     IncomingWebhookData,
@@ -206,3 +206,4 @@ export class WebhookService {
 }
 
 export const webhookService = new WebhookService();
+*/
