@@ -9,3 +9,4 @@ const connection = new IORedis({
 
 export const snmpQueue = new Queue('snmp-monitor', { connection });
 export const pingQueue = new Queue('ping-monitor', { connection });
+export const apiQueue = new Queue('api-monitor', { connection });

@@ -22,7 +22,9 @@ export const pingRouteSchema = {
                     target: { type: 'string' },
                     reachable: { type: 'boolean' },
                     retriesUsed: { type: 'number' },
-                    averageLatency: { type: ['number', 'null'] },
+                    averageLatency: {
+                        type: ['number', 'null'],
+                    },
                 },
             },
         },

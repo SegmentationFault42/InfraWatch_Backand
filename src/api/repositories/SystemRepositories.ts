@@ -11,7 +11,9 @@ class SystemRepository {
             });
         } catch (error) {
             console.error('Error verifying system existence:', error);
-            throw ErrorFactory.internalServerError({ originalError: error });
+            throw ErrorFactory.internalServerError({
+                originalError: error,
+            });
         }
     }
 
@@ -28,7 +30,9 @@ class SystemRepository {
             }
 
             if (data.slaConfig) {
-                systemData.SLAConfig = { create: data.slaConfig };
+                systemData.SLAConfig = {
+                    create: data.slaConfig,
+                };
             }
 
             return await prisma.system.create({
@@ -40,7 +44,9 @@ class SystemRepository {
             });
         } catch (error) {
             console.error('Error creating system:', error);
-            throw ErrorFactory.systemCreateFailed({ originalError: error });
+            throw ErrorFactory.systemCreateFailed({
+                originalError: error,
+            });
         }
     }
 
@@ -67,7 +73,9 @@ class SystemRepository {
             });
         } catch (error) {
             console.error('Error fetching all systems:', error);
-            throw ErrorFactory.internalServerError({ originalError: error });
+            throw ErrorFactory.internalServerError({
+                originalError: error,
+            });
         }
     }
 
@@ -82,7 +90,9 @@ class SystemRepository {
             });
         } catch (error) {
             console.error('Error fetching system by ID:', error);
-            throw ErrorFactory.internalServerError({ originalError: error });
+            throw ErrorFactory.internalServerError({
+                originalError: error,
+            });
         }
     }
 
@@ -112,7 +122,9 @@ class SystemRepository {
             return !!system;
         } catch (error) {
             console.error('Error verifying system:', error);
-            throw ErrorFactory.internalServerError({ originalError: error });
+            throw ErrorFactory.internalServerError({
+                originalError: error,
+            });
         }
     }
 
@@ -130,19 +142,21 @@ class SystemRepository {
             ) {
                 throw ErrorFactory.systemNotFound();
             }
-            throw ErrorFactory.systemUpdateFailed({ originalError: error });
-        }
-    }
-     async updateSystemStatus(
-            systemId: string,
-            status: 'up' | 'down' | 'warning' | 'unknown',
-        ): Promise<void> {
-            console.log("aaaaaaaaaaaaaaaaaaaaaaaa")
-            await prisma.system.update({
-                where: { id: systemId },
-                data: { status, updatedAt: new Date() },
+            throw ErrorFactory.systemUpdateFailed({
+                originalError: error,
             });
         }
+    }
+    async updateSystemStatus(
+        systemId: string,
+        status: 'up' | 'down' | 'warning' | 'unknown',
+    ): Promise<void> {
+        console.log('aaaaaaaaaaaaaaaaaaaaaaaa');
+        await prisma.system.update({
+            where: { id: systemId },
+            data: { status, updatedAt: new Date() },
+        });
+    }
 }
 
 export const systemRepository = new SystemRepository();

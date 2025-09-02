@@ -6,36 +6,25 @@ type CreateUserData = {
     name: string;
     email: string;
     password: string;
-    roleId?: string;
-};
-
-type UserWithRole = User & {
-    role: {
-        id: string;
-        nome: string;
-        description: string | null;
-    } | null;
 };
 
 class UserRepository {
-    async findByEmail(email: string): Promise<User | null> {
+    async findByEmail(email: string) {
         return await prisma.user.findUnique({
             where: { email },
         });
     }
 
-    async findById(id: string): Promise<UserWithRole | null> {
+    async findById(id: string) {
         return await prisma.user.findUnique({
             where: { id },
-            include: { role: true },
         });
     }
 
-    async create(data: CreateUserData): Promise<UserWithRole> {
+    async create(data: CreateUserData) {
         try {
             return await prisma.user.create({
                 data,
-                include: { role: true },
             });
         } catch (error) {
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -59,14 +48,15 @@ class UserRepository {
         });
     }
 
-    async update(
-        id: string,
-        data: Partial<CreateUserData>,
-    ): Promise<UserWithRole> {
+    async update(id: string, data: Partial<CreateUserData>) {
         return await prisma.user.update({
             where: { id },
             data,
-            include: { role: true },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+            },
         });
     }
 
@@ -75,14 +65,8 @@ class UserRepository {
             where: { id },
         });
     }
-
-    async findAll(skip?: number, take?: number): Promise<UserWithRole[]> {
-        return await prisma.user.findMany({
-            skip,
-            take,
-            include: { role: true },
-            orderBy: { createdAt: 'desc' },
-        });
+    async getAllUser() {
+        return await prisma.user.findMany({});
     }
 }
 

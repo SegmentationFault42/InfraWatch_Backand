@@ -19,12 +19,16 @@ export function SystemRoutes(fastify: FastifyInstance) {
     );
     fastify.get(
         '/hosts',
-        { schema: GetAllSystemsSwaggerSchema /*preHandler: verifyJWT*/ },
+        {
+            schema: GetAllSystemsSwaggerSchema /*preHandler: verifyJWT*/,
+        },
         systemController.getAllSystems,
     );
     fastify.get(
         '/hosts/:id',
-        { schema: GetSystemByIdSwaggerSchema /*preHandler: verifyJWT */ },
+        {
+            schema: GetSystemByIdSwaggerSchema /*preHandler: verifyJWT */,
+        },
         systemController.getSystemById,
     );
     fastify.delete(

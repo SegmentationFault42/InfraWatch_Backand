@@ -83,9 +83,9 @@ class UserController {
         }
     }
 
-    async getUser(req: FastifyRequest, res: FastifyReply) {
+    async getUserById(req: FastifyRequest, res: FastifyReply) {
         try {
-            const { id } = userValidation.idSchema.parse(req.params);
+            const { id } = userValidation.id.parse(req.params);
             const user = await userService.getUserById(id);
 
             res.status(200).send({
@@ -106,6 +106,64 @@ class UserController {
             }
         }
     }
+    async getAllUser(req: FastifyRequest, res: FastifyReply) {
+        try {
+            const users = await userService.getAllUser();
+            res.status(200).send(users);
+        } catch (err: any) {
+            res.status(500).send({
+                success: false,
+                message: 'Erro interno do servidor',
+            });
+        }
+    }
+
+    async update(req: FastifyRequest, res: FastifyReply) {
+        try {
+            const { id } = userValidation.id.parse(req.params);
+            const validatedData = userValidation.updateUserSchema.parse(
+                req.body,
+            );
+
+            const updatedUser = await userService.update(id, validatedData);
+
+            return res.code(200).send({
+                success: true,
+                message: 'Utilizador atualizado com sucesso',
+                data: updatedUser,
+            });
+        } catch (error: any) {
+            if (error.name === 'ZodError') {
+                return res.code(400).send({
+                    success: false,
+                    message: 'Dados inválidos',
+                    errors: error.errors,
+                });
+            }
+
+            return res.code(400).send({
+                success: false,
+                message: error.message,
+            });
+        }
+    }
+    async delete(req: FastifyRequest, reply: FastifyReply) {
+   try {
+       const { id } = await userValidation.id.parse(req.params);
+
+       await userService.delete(id);
+
+       return reply.code(200).send({
+           success: true,
+           message: 'Utilizador eliminado com sucesso'
+       });
+   } catch (error: any) {
+       return reply.code(400).send({
+           success: false,
+           message: error.message
+       });
+   }
+}
 }
 
 export const userController = new UserController();

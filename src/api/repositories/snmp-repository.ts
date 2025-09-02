@@ -1,4 +1,4 @@
-import { timeseries , prisma} from '../../config/database';
+import { timeseries, prisma } from '../../config/database';
 import type {
     SnmpConfig,
     SnmpMetrics,
@@ -6,7 +6,7 @@ import type {
 } from '../types/snmp-types';
 
 class SnmpRepository {
-   async findSnmpSystemById(id: string): Promise<SystemWithSnmp | null> {
+    async findSnmpSystemById(id: string): Promise<SystemWithSnmp | null> {
         const system = await prisma.system.findUnique({
             where: { id },
             include: {
@@ -16,7 +16,6 @@ class SnmpRepository {
             },
         });
 
-        
         if (!system || system.monitors.length === 0) return null;
 
         return {
@@ -66,7 +65,6 @@ class SnmpRepository {
             },
         });
     }
-
 
     async getMetricsHistory(
         deviceId: string,
@@ -122,4 +120,4 @@ class SnmpRepository {
     }
 }
 
-export const snmprepository = new SnmpRepository()
+export const snmprepository = new SnmpRepository();

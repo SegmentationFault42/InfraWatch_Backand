@@ -12,7 +12,7 @@ class SystemController {
             const data = systemValidation.createSystemSchema.parse(req.body);
             const system = await systemService.addSystem(data);
             console.log('chegou');
-            await auditLogService.logRequest({
+            /* await auditLogService.logRequest({
                 user_id: req.user?.id ?? null,
                 action: 'CREATE',
                 object_type: 'system',
@@ -22,7 +22,7 @@ class SystemController {
                     url: req.url,
                     method: req.method,
                 },
-            });
+            });*/
 
             return res.status(201).send({
                 message: 'Sistema adicionado com sucesso',
@@ -101,7 +101,9 @@ class SystemController {
             return res.status(error.statusCode).send({
                 error: error.message,
                 code: error.code,
-                ...(error.details && { details: error.details }),
+                ...(error.details && {
+                    details: error.details,
+                }),
             });
         }
 

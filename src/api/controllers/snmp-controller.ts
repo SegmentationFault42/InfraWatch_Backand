@@ -3,9 +3,6 @@ import { snmpservice } from '../services/snmp-service';
 import { SnmpError } from '../errors/snmp-errors';
 
 class SnmpController {
-   
-
-    // POST /snmp/systems/:id/test
     testSnmpConnection = async (
         request: FastifyRequest<{ Params: { id: string } }>,
         reply: FastifyReply,
@@ -24,7 +21,6 @@ class SnmpController {
         }
     };
 
-    // POST /snmp/systems/:id/monitor
     monitorSnmpSystem = async (
         request: FastifyRequest<{ Params: { id: string } }>,
         reply: FastifyReply,
@@ -81,62 +77,6 @@ class SnmpController {
         }
     };
 
-
-    // GET /snmp/systems/:id/metrics
-    getSnmpSystemMetrics = async (
-        request: FastifyRequest<{
-            Params: { id: string };
-            Querystring: { from?: string; to?: string; limit?: string };
-        }>,
-        reply: FastifyReply,
-    ) => {
-        try {
-            const { id } = request.params;
-            const { from, to, limit } = request.query;
-
-            let metrics;
-
-            if (from || to) {
-                const fromDate = from
-                    ? new Date(from)
-                    : new Date(Date.now() - 24 * 60 * 60 * 1000);
-                const toDate = to ? new Date(to) : new Date();
-                metrics = await snmpservice.getSystemMetrics(
-                    id,
-                    fromDate,
-                    toDate,
-                );
-            } else {
-                const limitNum = limit ? parseInt(limit) : 50;
-                metrics = await snmpservice.getSystemLastMetrics(
-                    id,
-                    limitNum,
-                );
-            }
-
-            reply.send({
-                success: true,
-                data: {
-                    metrics,
-                    count: metrics.length,
-                    period:
-                        from || to
-                            ? {
-                                  from: from
-                                      ? new Date(from)
-                                      : new Date(
-                                            Date.now() - 24 * 60 * 60 * 1000,
-                                        ),
-                                  to: to ? new Date(to) : new Date(),
-                              }
-                            : undefined,
-                },
-            });
-        } catch (error) {
-            this.handleError(reply, error);
-        }
-    };
-
     private handleError(reply: FastifyReply, error: any): void {
         console.error('SNMP Controller Error:', error);
 
@@ -164,4 +104,4 @@ class SnmpController {
     }
 }
 
-export const snmpcontroller = new SnmpController()
+export const snmpcontroller = new SnmpController();

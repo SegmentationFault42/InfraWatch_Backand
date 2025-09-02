@@ -13,19 +13,12 @@ model User {
   name      String
   email     String      @unique
   password  String
-  roleId    String?     
-  role      Role?       @relation(fields: [roleId], references: [id])
+  role   Role
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   auditLogs audit_logs[]
 }
 
-model Role {
-  id          String    @id @default(uuid())
-  nome        String
-  description String?
-  users       User[]
-}
 
 model System {
   id        String       @id @default(uuid())
@@ -123,4 +116,10 @@ enum alert_status {
   pending
   resolved
   canceled
+}
+
+enum Role{
+  ADMIN
+  VIEWER
+  EDITOR
 }

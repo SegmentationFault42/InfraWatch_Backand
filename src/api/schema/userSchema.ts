@@ -39,14 +39,27 @@ export const LoginSwaggerSchema = {
                         user: {
                             type: 'object',
                             properties: {
-                                id: { type: 'string', format: 'uuid' },
-                                name: { type: 'string' },
-                                email: { type: 'string', format: 'email' },
+                                id: {
+                                    type: 'string',
+                                    format: 'uuid',
+                                },
+                                name: {
+                                    type: 'string',
+                                },
+                                email: {
+                                    type: 'string',
+                                    format: 'email',
+                                },
                                 role: {
                                     type: ['object', 'null'],
                                     properties: {
-                                        id: { type: 'string', format: 'uuid' },
-                                        nome: { type: 'string' },
+                                        id: {
+                                            type: 'string',
+                                            format: 'uuid',
+                                        },
+                                        nome: {
+                                            type: 'string',
+                                        },
                                         description: {
                                             type: ['string', 'null'],
                                         },
@@ -63,14 +76,21 @@ export const LoginSwaggerSchema = {
             type: 'object',
             properties: {
                 success: { type: 'boolean', example: false },
-                message: { type: 'string', example: 'Dados inválidos' },
+                message: {
+                    type: 'string',
+                    example: 'Dados inválidos',
+                },
                 errors: {
                     type: 'array',
                     items: {
                         type: 'object',
                         properties: {
-                            field: { type: 'string' },
-                            message: { type: 'string' },
+                            field: {
+                                type: 'string',
+                            },
+                            message: {
+                                type: 'string',
+                            },
                         },
                     },
                 },
@@ -81,8 +101,14 @@ export const LoginSwaggerSchema = {
             type: 'object',
             properties: {
                 success: { type: 'boolean', example: false },
-                message: { type: 'string', example: 'Credenciais inválidas' },
-                code: { type: 'string', example: 'UNAUTHORIZED' },
+                message: {
+                    type: 'string',
+                    example: 'Credenciais inválidas',
+                },
+                code: {
+                    type: 'string',
+                    example: 'UNAUTHORIZED',
+                },
             },
         },
         500: {
@@ -144,18 +170,40 @@ export const CreateUserSwaggerSchema = {
                 data: {
                     type: 'object',
                     properties: {
-                        id: { type: 'string', format: 'uuid' },
+                        id: {
+                            type: 'string',
+                            format: 'uuid',
+                        },
                         name: { type: 'string' },
-                        email: { type: 'string', format: 'email' },
-                        roleId: { type: ['string', 'null'], format: 'uuid' },
-                        createdAt: { type: 'string', format: 'date-time' },
-                        updatedAt: { type: 'string', format: 'date-time' },
+                        email: {
+                            type: 'string',
+                            format: 'email',
+                        },
+                        roleId: {
+                            type: ['string', 'null'],
+                            format: 'uuid',
+                        },
+                        createdAt: {
+                            type: 'string',
+                            format: 'date-time',
+                        },
+                        updatedAt: {
+                            type: 'string',
+                            format: 'date-time',
+                        },
                         role: {
                             type: ['object', 'null'],
                             properties: {
-                                id: { type: 'string', format: 'uuid' },
-                                nome: { type: 'string' },
-                                description: { type: ['string', 'null'] },
+                                id: {
+                                    type: 'string',
+                                    format: 'uuid',
+                                },
+                                nome: {
+                                    type: 'string',
+                                },
+                                description: {
+                                    type: ['string', 'null'],
+                                },
                             },
                         },
                     },
@@ -167,14 +215,21 @@ export const CreateUserSwaggerSchema = {
             type: 'object',
             properties: {
                 success: { type: 'boolean', example: false },
-                message: { type: 'string', example: 'Dados inválidos' },
+                message: {
+                    type: 'string',
+                    example: 'Dados inválidos',
+                },
                 errors: {
                     type: 'array',
                     items: {
                         type: 'object',
                         properties: {
-                            field: { type: 'string' },
-                            message: { type: 'string' },
+                            field: {
+                                type: 'string',
+                            },
+                            message: {
+                                type: 'string',
+                            },
                         },
                     },
                 },
@@ -229,18 +284,40 @@ export const GetUserSwaggerSchema = {
                 data: {
                     type: 'object',
                     properties: {
-                        id: { type: 'string', format: 'uuid' },
+                        id: {
+                            type: 'string',
+                            format: 'uuid',
+                        },
                         name: { type: 'string' },
-                        email: { type: 'string', format: 'email' },
-                        roleId: { type: ['string', 'null'], format: 'uuid' },
-                        createdAt: { type: 'string', format: 'date-time' },
-                        updatedAt: { type: 'string', format: 'date-time' },
+                        email: {
+                            type: 'string',
+                            format: 'email',
+                        },
+                        roleId: {
+                            type: ['string', 'null'],
+                            format: 'uuid',
+                        },
+                        createdAt: {
+                            type: 'string',
+                            format: 'date-time',
+                        },
+                        updatedAt: {
+                            type: 'string',
+                            format: 'date-time',
+                        },
                         role: {
                             type: ['object', 'null'],
                             properties: {
-                                id: { type: 'string', format: 'uuid' },
-                                nome: { type: 'string' },
-                                description: { type: ['string', 'null'] },
+                                id: {
+                                    type: 'string',
+                                    format: 'uuid',
+                                },
+                                nome: {
+                                    type: 'string',
+                                },
+                                description: {
+                                    type: ['string', 'null'],
+                                },
                             },
                         },
                     },
@@ -252,7 +329,10 @@ export const GetUserSwaggerSchema = {
             type: 'object',
             properties: {
                 success: { type: 'boolean', example: false },
-                message: { type: 'string', example: 'ID inválido' },
+                message: {
+                    type: 'string',
+                    example: 'ID inválido',
+                },
             },
         },
         404: {
@@ -260,7 +340,10 @@ export const GetUserSwaggerSchema = {
             type: 'object',
             properties: {
                 success: { type: 'boolean', example: false },
-                message: { type: 'string', example: 'Usuário não encontrado' },
+                message: {
+                    type: 'string',
+                    example: 'Usuário não encontrado',
+                },
                 code: { type: 'string', example: 'NOT_FOUND' },
             },
         },

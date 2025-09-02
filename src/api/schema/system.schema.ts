@@ -126,7 +126,10 @@ export const CreateSystemSwaggerSchema = {
                             items: {
                                 type: 'object',
                                 properties: {
-                                    id: { type: 'string', format: 'uuid' },
+                                    id: {
+                                        type: 'string',
+                                        format: 'uuid',
+                                    },
                                     type: {
                                         type: 'string',
                                         enum: [
@@ -136,8 +139,12 @@ export const CreateSystemSwaggerSchema = {
                                             'WEBHOOK',
                                         ],
                                     },
-                                    config: { type: 'object' },
-                                    interval: { type: 'integer' },
+                                    config: {
+                                        type: 'object',
+                                    },
+                                    interval: {
+                                        type: 'integer',
+                                    },
                                 },
                             },
                         },
@@ -146,11 +153,22 @@ export const CreateSystemSwaggerSchema = {
                             items: {
                                 type: 'object',
                                 properties: {
-                                    id: { type: 'string', format: 'uuid' },
-                                    uptimeTarget: { type: 'number' },
-                                    maxDowntime: { type: 'integer' },
-                                    responseTimeTarget: { type: 'integer' },
-                                    monitoringWindow: { type: 'string' },
+                                    id: {
+                                        type: 'string',
+                                        format: 'uuid',
+                                    },
+                                    uptimeTarget: {
+                                        type: 'number',
+                                    },
+                                    maxDowntime: {
+                                        type: 'integer',
+                                    },
+                                    responseTimeTarget: {
+                                        type: 'integer',
+                                    },
+                                    monitoringWindow: {
+                                        type: 'string',
+                                    },
                                 },
                             },
                         },
@@ -184,11 +202,24 @@ export const CreateSystemSwaggerSchema = {
                     items: {
                         type: 'object',
                         properties: {
-                            code: { type: 'string' },
-                            expected: { type: 'string' },
-                            received: { type: 'string' },
-                            path: { type: 'array', items: { type: 'string' } },
-                            message: { type: 'string' },
+                            code: {
+                                type: 'string',
+                            },
+                            expected: {
+                                type: 'string',
+                            },
+                            received: {
+                                type: 'string',
+                            },
+                            path: {
+                                type: 'array',
+                                items: {
+                                    type: 'string',
+                                },
+                            },
+                            message: {
+                                type: 'string',
+                            },
                         },
                     },
                     description:
@@ -234,20 +265,33 @@ export const GetAllSystemsSwaggerSchema = {
                     items: {
                         type: 'object',
                         properties: {
-                            id: { type: 'string', format: 'uuid' },
-                            name: { type: 'string' },
-                            host: { type: 'string' },
+                            id: {
+                                type: 'string',
+                                format: 'uuid',
+                            },
+                            name: {
+                                type: 'string',
+                            },
+                            host: {
+                                type: 'string',
+                            },
                             status: {
                                 type: 'string',
                                 enum: ['up', 'down', 'warning', 'unknown'],
                             },
-                            alert_email: { type: 'string', format: 'email' },
+                            alert_email: {
+                                type: 'string',
+                                format: 'email',
+                            },
                             monitors: {
                                 type: 'array',
                                 items: {
                                     type: 'object',
                                     properties: {
-                                        id: { type: 'string', format: 'uuid' },
+                                        id: {
+                                            type: 'string',
+                                            format: 'uuid',
+                                        },
                                         type: {
                                             type: 'string',
                                             enum: [
@@ -257,13 +301,23 @@ export const GetAllSystemsSwaggerSchema = {
                                                 'WEBHOOK',
                                             ],
                                         },
-                                        config: { type: 'object' },
-                                        interval: { type: 'integer' },
+                                        config: {
+                                            type: 'object',
+                                        },
+                                        interval: {
+                                            type: 'integer',
+                                        },
                                     },
                                 },
                             },
-                            createdAt: { type: 'string', format: 'date-time' },
-                            updatedAt: { type: 'string', format: 'date-time' },
+                            createdAt: {
+                                type: 'string',
+                                format: 'date-time',
+                            },
+                            updatedAt: {
+                                type: 'string',
+                                format: 'date-time',
+                            },
                         },
                     },
                 },
@@ -306,18 +360,40 @@ export const GetSystemByIdSwaggerSchema = {
                 data: {
                     type: 'object',
                     properties: {
-                        id: { type: 'string', format: 'uuid' },
+                        id: {
+                            type: 'string',
+                            format: 'uuid',
+                        },
                         name: { type: 'string' },
                         host: { type: 'string' },
-                        alert_email: { type: 'string', format: 'email' },
+                        alert_email: {
+                            type: 'string',
+                            format: 'email',
+                        },
                         status: {
                             type: 'string',
                             enum: ['up', 'down', 'warning', 'unknown'],
                         },
-                        monitors: { type: 'array', items: { type: 'object' } },
-                        SLAConfig: { type: 'array', items: { type: 'object' } },
-                        createdAt: { type: 'string', format: 'date-time' },
-                        updatedAt: { type: 'string', format: 'date-time' },
+                        monitors: {
+                            type: 'array',
+                            items: {
+                                type: 'object',
+                            },
+                        },
+                        SLAConfig: {
+                            type: 'array',
+                            items: {
+                                type: 'object',
+                            },
+                        },
+                        createdAt: {
+                            type: 'string',
+                            format: 'date-time',
+                        },
+                        updatedAt: {
+                            type: 'string',
+                            format: 'date-time',
+                        },
                     },
                 },
             },
@@ -326,16 +402,28 @@ export const GetSystemByIdSwaggerSchema = {
             description: 'ID inválido',
             type: 'object',
             properties: {
-                error: { type: 'string', example: 'Validação falhou' },
-                details: { type: 'array', items: { type: 'object' } },
+                error: {
+                    type: 'string',
+                    example: 'Validação falhou',
+                },
+                details: {
+                    type: 'array',
+                    items: { type: 'object' },
+                },
             },
         },
         404: {
             description: 'Sistema não encontrado',
             type: 'object',
             properties: {
-                error: { type: 'string', example: 'Sistema não encontrado' },
-                code: { type: 'string', example: 'SYSTEM_NOT_FOUND' },
+                error: {
+                    type: 'string',
+                    example: 'Sistema não encontrado',
+                },
+                code: {
+                    type: 'string',
+                    example: 'SYSTEM_NOT_FOUND',
+                },
             },
         },
         500: {

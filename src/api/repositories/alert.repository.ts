@@ -1,39 +1,36 @@
-import prisma from "../../config/database";
+import prisma from '../../config/database';
 
-class AlertRepository{
-    async createAlertForSNMP(systemId: string, title: string, message: string)
-    {
+class AlertRepository {
+    async createAlertForSNMP(systemId: string, title: string, message: string) {
         return await prisma.alerts.create({
             data: {
                 systemId,
                 title,
                 message,
-                severity: "critical"
-            }
-        })
+                severity: 'critical',
+            },
+        });
     }
-    async createAlertForPING(systemId: string, title: string, message: string)
-    {
+    async createAlertForPING(systemId: string, title: string, message: string) {
         return await prisma.alerts.create({
             data: {
                 systemId,
                 title,
                 message,
-                severity: "critical"
-            }
-        })
+                severity: 'critical',
+            },
+        });
     }
-    async createAlertForAPI(systemId: string, title: string, message: string)
-    {
+    async createAlertForAPI(systemId: string, title: string, message: string) {
         return await prisma.alerts.create({
             data: {
                 systemId,
                 title,
                 message,
-                severity: "critical"
-            }
-        })
+                severity: 'critical',
+            },
+        });
     }
 }
 
-export const alertRepository = new AlertRepository()
+export const alertRepository = new AlertRepository();

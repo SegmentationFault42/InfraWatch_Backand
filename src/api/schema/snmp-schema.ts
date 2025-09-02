@@ -13,22 +13,36 @@ export const getAllSnmpSystemsSchema = {
                         type: 'object',
                         properties: {
                             id: { type: 'string' },
-                            name: { type: 'string' },
-                            host: { type: 'string' },
+                            name: {
+                                type: 'string',
+                            },
+                            host: {
+                                type: 'string',
+                            },
                             status: {
                                 type: 'string',
                                 enum: ['up', 'down', 'warning', 'unknown'],
                             },
-                            alert_email: { type: 'string' },
+                            alert_email: {
+                                type: 'string',
+                            },
                             monitors: {
                                 type: 'array',
                                 items: {
                                     type: 'object',
                                     properties: {
-                                        id: { type: 'string' },
-                                        type: { type: 'string' },
-                                        config: { type: 'object' },
-                                        interval: { type: 'number' },
+                                        id: {
+                                            type: 'string',
+                                        },
+                                        type: {
+                                            type: 'string',
+                                        },
+                                        config: {
+                                            type: 'object',
+                                        },
+                                        interval: {
+                                            type: 'number',
+                                        },
                                     },
                                 },
                             },
@@ -104,8 +118,13 @@ export const testSnmpConnectionSchema = {
                             type: 'string',
                             enum: ['up', 'down', 'warning'],
                         },
-                        timestamp: { type: 'string', format: 'date-time' },
-                        responseTime: { type: 'number' },
+                        timestamp: {
+                            type: 'string',
+                            format: 'date-time',
+                        },
+                        responseTime: {
+                            type: 'number',
+                        },
                         values: { type: 'object' },
                         error: { type: 'string' },
                     },
@@ -156,8 +175,13 @@ export const monitorSnmpSystemSchema = {
                             type: 'string',
                             enum: ['up', 'down', 'warning'],
                         },
-                        timestamp: { type: 'string', format: 'date-time' },
-                        responseTime: { type: 'number' },
+                        timestamp: {
+                            type: 'string',
+                            format: 'date-time',
+                        },
+                        responseTime: {
+                            type: 'number',
+                        },
                         values: { type: 'object' },
                     },
                 },
@@ -184,21 +208,39 @@ export const monitorAllSnmpSystemsSchema = {
                             additionalProperties: {
                                 type: 'object',
                                 properties: {
-                                    status: { type: 'string' },
-                                    timestamp: { type: 'string' },
-                                    responseTime: { type: 'number' },
-                                    values: { type: 'object' },
+                                    status: {
+                                        type: 'string',
+                                    },
+                                    timestamp: {
+                                        type: 'string',
+                                    },
+                                    responseTime: {
+                                        type: 'number',
+                                    },
+                                    values: {
+                                        type: 'object',
+                                    },
                                 },
                             },
                         },
                         summary: {
                             type: 'object',
                             properties: {
-                                total: { type: 'number' },
-                                up: { type: 'number' },
-                                down: { type: 'number' },
-                                warning: { type: 'number' },
-                                uptime_percentage: { type: 'number' },
+                                total: {
+                                    type: 'number',
+                                },
+                                up: {
+                                    type: 'number',
+                                },
+                                down: {
+                                    type: 'number',
+                                },
+                                warning: {
+                                    type: 'number',
+                                },
+                                uptime_percentage: {
+                                    type: 'number',
+                                },
                             },
                         },
                     },
@@ -223,11 +265,21 @@ export const getSnmpDashboardSchema = {
                         summary: {
                             type: 'object',
                             properties: {
-                                total_systems: { type: 'number' },
-                                up_systems: { type: 'number' },
-                                down_systems: { type: 'number' },
-                                warning_systems: { type: 'number' },
-                                overall_uptime: { type: 'number' },
+                                total_systems: {
+                                    type: 'number',
+                                },
+                                up_systems: {
+                                    type: 'number',
+                                },
+                                down_systems: {
+                                    type: 'number',
+                                },
+                                warning_systems: {
+                                    type: 'number',
+                                },
+                                overall_uptime: {
+                                    type: 'number',
+                                },
                             },
                         },
                         systems: {
@@ -235,14 +287,24 @@ export const getSnmpDashboardSchema = {
                             items: {
                                 type: 'object',
                                 properties: {
-                                    id: { type: 'string' },
-                                    name: { type: 'string' },
-                                    host: { type: 'string' },
+                                    id: {
+                                        type: 'string',
+                                    },
+                                    name: {
+                                        type: 'string',
+                                    },
+                                    host: {
+                                        type: 'string',
+                                    },
                                     current_status: {
                                         type: 'object',
                                         properties: {
-                                            status: { type: 'string' },
-                                            responseTime: { type: 'number' },
+                                            status: {
+                                                type: 'string',
+                                            },
+                                            responseTime: {
+                                                type: 'number',
+                                            },
                                         },
                                     },
                                 },
@@ -304,13 +366,27 @@ export const getSnmpSystemMetricsSchema = {
                                         type: 'string',
                                         format: 'date-time',
                                     },
-                                    deviceId: { type: 'string' },
-                                    cpu: { type: ['number', 'null'] },
-                                    memory: { type: ['number', 'null'] },
-                                    status: { type: ['number', 'null'] },
-                                    temperature: { type: ['number', 'null'] },
-                                    inOctets: { type: ['string', 'null'] },
-                                    outOctets: { type: ['string', 'null'] },
+                                    deviceId: {
+                                        type: 'string',
+                                    },
+                                    cpu: {
+                                        type: ['number', 'null'],
+                                    },
+                                    memory: {
+                                        type: ['number', 'null'],
+                                    },
+                                    status: {
+                                        type: ['number', 'null'],
+                                    },
+                                    temperature: {
+                                        type: ['number', 'null'],
+                                    },
+                                    inOctets: {
+                                        type: ['string', 'null'],
+                                    },
+                                    outOctets: {
+                                        type: ['string', 'null'],
+                                    },
                                 },
                             },
                         },
@@ -318,8 +394,14 @@ export const getSnmpSystemMetricsSchema = {
                         period: {
                             type: 'object',
                             properties: {
-                                from: { type: 'string', format: 'date-time' },
-                                to: { type: 'string', format: 'date-time' },
+                                from: {
+                                    type: 'string',
+                                    format: 'date-time',
+                                },
+                                to: {
+                                    type: 'string',
+                                    format: 'date-time',
+                                },
                             },
                         },
                     },
@@ -350,7 +432,9 @@ export const getSnmpSystemStatusSchema = {
                     properties: {
                         system: { type: 'object' },
                         lastCheck: { type: 'object' },
-                        recentMetrics: { type: 'array' },
+                        recentMetrics: {
+                            type: 'array',
+                        },
                     },
                 },
             },

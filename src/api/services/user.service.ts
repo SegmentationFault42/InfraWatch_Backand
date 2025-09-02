@@ -7,13 +7,12 @@ import {
     UnauthorizedError,
 } from '../errors/base.errors';
 import { userRepository } from '../repositories/user.repository';
-import { roleRepository } from '../repositories/role.repository';
 
 type CreateUserData = {
     name: string;
     email: string;
     password: string;
-    roleId?: string;
+    role: string;
 };
 
 type LoginResponse = {
@@ -22,11 +21,6 @@ type LoginResponse = {
         id: string;
         name: string;
         email: string;
-        role: {
-            id: string;
-            nome: string;
-            description: string | null;
-        } | null;
     };
 };
 
@@ -36,23 +30,10 @@ class UserService {
         if (existingUser) {
             throw new ConflictError('Usuário já existe com este email');
         }
-
-        let roleId = data.roleId;
-        if (!roleId) {
-            const defaultRole = await roleRepository.getDefaultViewerRole();
-            roleId = defaultRole.id;
-        } else {
-            const role = await roleRepository.findById(roleId);
-            if (!role) {
-                throw new NotFoundError('Role');
-            }
-        }
-
         const hashedPassword = await bcrypt.hash(data.password, 12);
         const newUser = await userRepository.create({
             ...data,
             password: hashedPassword,
-            roleId,
         });
 
         const { password, ...userWithoutPassword } = newUser;
@@ -79,7 +60,6 @@ class UserService {
             {
                 id: user.id,
                 email: user.email,
-                roleId: fullUser.role?.id,
             },
             ENV.JWT_SECRET,
             { expiresIn: '24h' },
@@ -91,7 +71,6 @@ class UserService {
                 id: fullUser.id,
                 name: fullUser.name,
                 email: fullUser.email,
-                role: fullUser.role,
             },
         };
     }
@@ -104,6 +83,46 @@ class UserService {
 
         const { password, ...userWithoutPassword } = user;
         return userWithoutPassword;
+    }
+    async getAllUser() {
+        const users = await userRepository.getAllUser();
+        if (users.length <= 0) return 'Nenhum usuário encontado';
+        return users;
+    }
+
+    async update(id: string, data: Partial<CreateUserData>) {
+        const existingUser = await userRepository.findById(id);
+        if (!existingUser) {
+            throw new Error('Utilizador não encontrado');
+        }
+        if (data.email && data.email !== existingUser.email) {
+            const emailExists = await userRepository.findByEmail(data.email);
+            if (emailExists) {
+                throw new Error('Email já está em uso');
+            }
+        }
+        if (data.password) {
+            const hashedPassword = await bcrypt.hash(data.password, 12);
+            data.password = hashedPassword;
+        }
+
+        return await userRepository.update(id, data);
+    }
+
+    async delete(id: string) {
+        if (!id) {
+            throw new Error('ID do utilizador é obrigatório');
+        }
+
+        const user = await userRepository.findById(id);
+        if (!user) {
+            throw new Error('Utilizador não encontrado');
+        }
+
+        if (user.roleId === 'ADMIN') {
+            throw new Error('Utilizadores admin não podem ser eliminados');
+        }
+        return await userRepository.delete(id);
     }
 }
 

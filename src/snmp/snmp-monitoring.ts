@@ -16,7 +16,7 @@ export class SnmpMonitor {
         const startTime = Date.now();
 
         try {
-            console.log("chegou")
+            console.log('chegou');
             await this.createSession();
             const values = await this.queryOids();
             const responseTime = Date.now() - startTime;
@@ -29,9 +29,9 @@ export class SnmpMonitor {
             };
         } catch (error) {
             const responseTime = Date.now() - startTime;
-            console.log("erro")
+            console.log('erro');
             return {
-                status: 'down', 
+                status: 'down',
                 timestamp: new Date(),
                 responseTime,
                 values: {},

@@ -9,7 +9,10 @@ export const getStatusSchema = {
             properties: {
                 status: { type: 'string', example: 'ok' },
                 uptime: { type: 'number', example: 12345 },
-                timestamp: { type: 'string', format: 'date-time' },
+                timestamp: {
+                    type: 'string',
+                    format: 'date-time',
+                },
             },
         },
     },

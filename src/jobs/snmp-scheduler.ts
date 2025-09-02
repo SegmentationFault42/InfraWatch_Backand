@@ -17,8 +17,8 @@ export async function scheduleSnmpSystem(system: SystemWithSnmp) {
         'snmp-check',
         { systemId: system.id },
         {
-            jobId: `snmp-${system.id}`, 
-            repeat: { every: interval * 1000 }, 
+            jobId: `snmp-${system.id}`,
+            repeat: { every: interval * 1000 },
             removeOnComplete: true,
         },
     );

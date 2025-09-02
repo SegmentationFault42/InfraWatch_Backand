@@ -9,7 +9,6 @@ import { systemRepository } from '../repositories/SystemRepositories';
 import { alertRepository } from '../repositories/alert.repository';
 
 export class SnmpService {
-
     async getAllSnmpSystems(): Promise<SystemWithSnmp[]> {
         return await snmprepository.findAllSnmpSystems();
     }
@@ -35,7 +34,7 @@ export class SnmpService {
             throw new Error('Sistema não possui monitores SNMP configurados');
         }
 
-        const monitor = system.monitors[0]; 
+        const monitor = system.monitors[0];
         const snmpMonitor = new SnmpMonitor(monitor.config);
 
         return await snmpMonitor.check();
@@ -56,12 +55,13 @@ export class SnmpService {
         if (result.status === 'up') {
             const metrics = this.convertToMetrics(systemId, result);
             await snmprepository.saveMetrics(metrics);
-			
+        } else if (result.status === 'down' && system.status !== 'down') {
+            alertRepository.createAlertForSNMP(
+                systemId,
+                `Sistema no estado Down`,
+                `O sistema ${system.name} está no estado Down`,
+            );
         }
-		else if (result.status === 'down' && system.status !== 'down')
-		{
-			alertRepository.createAlertForSNMP(systemId, `Sistema no estado Down`, `O sistema ${system.name} está no estado Down`)
-		}
         await systemRepository.updateSystemStatus(systemId, result.status);
         return result;
     }
@@ -79,7 +79,7 @@ export class SnmpService {
                     );
                 } catch (error) {
                     results[system.id] = {
-                        status: 'unknown', 
+                        status: 'unknown',
                         timestamp: new Date(),
                         responseTime: 0,
                         values: {},
@@ -97,51 +97,12 @@ export class SnmpService {
         return results;
     }
 
-    
-    async getSystemMetrics(
-        systemId: string,
-        from: Date,
-        to: Date,
-    ): Promise<SnmpMetrics[]> {
-        // Verificar se o sistema SNMP existe
-        await this.getSnmpSystemById(systemId);
-
-        return await snmprepository.getMetricsHistory(systemId, from, to);
-    }
-
-    async getSystemLastMetrics(
-        systemId: string,
-        limit: number = 50,
-    ): Promise<SnmpMetrics[]> {
-        // Verificar se o sistema SNMP existe
-        await this.getSnmpSystemById(systemId);
-
-        return await snmprepository.getLastMetrics(systemId, limit);
-    }
-
-    async getSystemStatus(systemId: string): Promise<{
-        system: SystemWithSnmp;
-        lastCheck: SnmpResult;
-        recentMetrics: SnmpMetrics[];
-    }> {
-        const system = await this.getSnmpSystemById(systemId);
-        const lastCheck = await this.testSnmpConnection(systemId);
-        const recentMetrics = await this.getSystemLastMetrics(systemId, 10);
-
-        return {
-            system,
-            lastCheck,
-            recentMetrics,
-        };
-    }
-
     private convertToMetrics(
         systemId: string,
         result: SnmpResult,
     ): SnmpMetrics {
         const values = result.values;
 
-        // Extrair valores dos OIDs conhecidos
         return {
             time: result.timestamp,
             deviceId: systemId,
@@ -172,13 +133,11 @@ export class SnmpService {
     private extractCpuFromOids(
         values: Record<string, any>,
     ): number | undefined {
-        // CPU Usage: 1.3.6.1.4.1.2021.11.9.0 (CPU Idle - convert to usage)
         const cpuIdle = values['1.3.6.1.4.1.2021.11.9.0'];
         if (cpuIdle !== undefined) {
             return 100 - parseInt(cpuIdle);
         }
 
-        // Alternative CPU OID: 1.3.6.1.2.1.25.3.3.1.2
         const cpuUsage = values['1.3.6.1.2.1.25.3.3.1.2'];
         if (cpuUsage !== undefined) {
             return parseInt(cpuUsage);
@@ -190,8 +149,6 @@ export class SnmpService {
     private extractMemoryFromOids(
         values: Record<string, any>,
     ): number | undefined {
-        // Total Memory: 1.3.6.1.4.1.2021.4.5.0
-        // Free Memory: 1.3.6.1.4.1.2021.4.6.0
         const totalMemory = values['1.3.6.1.4.1.2021.4.5.0'];
         const freeMemory = values['1.3.6.1.4.1.2021.4.6.0'];
 
@@ -200,7 +157,6 @@ export class SnmpService {
             return Math.round((used / parseInt(totalMemory)) * 100);
         }
 
-        // Alternative: hrStorageUsed/hrStorageSize * 100
         const storageUsed = values['1.3.6.1.2.1.25.2.3.1.6.1'];
         const storageSize = values['1.3.6.1.2.1.25.2.3.1.5.1'];
 
@@ -252,4 +208,4 @@ export class SnmpService {
     }
 }
 
-export const snmpservice = new SnmpService()
+export const snmpservice = new SnmpService();

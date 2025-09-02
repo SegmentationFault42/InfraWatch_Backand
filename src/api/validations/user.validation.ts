@@ -11,6 +11,8 @@ const passwordSchema = z
         'A senha deve conter pelo menos um caractere especial',
     );
 
+const roleEnum = z.enum(['ADMIN', 'VIEWER', 'EDITOR']);
+
 class UserValidation {
     createUserSchema = z.object({
         name: z
@@ -23,10 +25,7 @@ class UserValidation {
             .toLowerCase()
             .trim(),
         password: passwordSchema,
-        roleId: z
-            .string()
-            .uuid('ID da role deve ser um UUID válido')
-            .optional(),
+        role: roleEnum,
     });
 
     loginUserSchema = z.object({
@@ -51,13 +50,10 @@ class UserValidation {
             .trim()
             .optional(),
         password: passwordSchema.optional(),
-        roleId: z
-            .string()
-            .uuid('ID da role deve ser um UUID válido')
-            .optional(),
+        role: roleEnum.optional(),
     });
 
-    idSchema = z.object({
+    id = z.object({
         id: z.string().uuid('ID deve ser um UUID válido'),
     });
 }
