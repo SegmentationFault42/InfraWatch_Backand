@@ -148,22 +148,22 @@ class UserController {
         }
     }
     async delete(req: FastifyRequest, reply: FastifyReply) {
-   try {
-       const { id } = await userValidation.id.parse(req.params);
+        try {
+            const { id } = await userValidation.id.parse(req.params);
 
-       await userService.delete(id);
+            await userService.delete(id);
 
-       return reply.code(200).send({
-           success: true,
-           message: 'Utilizador eliminado com sucesso'
-       });
-   } catch (error: any) {
-       return reply.code(400).send({
-           success: false,
-           message: error.message
-       });
-   }
-}
+            return reply.code(200).send({
+                success: true,
+                message: 'Utilizador eliminado com sucesso',
+            });
+        } catch (error: any) {
+            return reply.code(400).send({
+                success: false,
+                message: error.message,
+            });
+        }
+    }
 }
 
 export const userController = new UserController();

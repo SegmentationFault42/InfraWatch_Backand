@@ -151,7 +151,6 @@ class SystemRepository {
         systemId: string,
         status: 'up' | 'down' | 'warning' | 'unknown',
     ): Promise<void> {
-        console.log('aaaaaaaaaaaaaaaaaaaaaaaa');
         await prisma.system.update({
             where: { id: systemId },
             data: { status, updatedAt: new Date() },
