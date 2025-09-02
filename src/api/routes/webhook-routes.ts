@@ -1,5 +1,5 @@
 // src/routes/webhook-routes.ts
-import { FastifyInstance } from 'fastify';
+/*import { FastifyInstance } from 'fastify';
 import { webhookController } from '../controllers/webhook-controller';
 
 export async function webhookRoutes(fastify: FastifyInstance) {
@@ -45,3 +45,4 @@ export async function webhookRoutes(fastify: FastifyInstance) {
         webhookController.getWebhookSystemStatus,
     );
 }
+*/

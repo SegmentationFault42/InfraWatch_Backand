@@ -1,5 +1,5 @@
 // src/controllers/webhook-controller.ts
-import { FastifyRequest, FastifyReply } from 'fastify';
+/*import { FastifyRequest, FastifyReply } from 'fastify';
 import { webhookService } from '../services/webhook-service';
 
 class WebhookController {
@@ -107,4 +107,4 @@ class WebhookController {
     }
 }
 
-export const webhookController = new WebhookController();
+export const webhookController = new WebhookController();*/
