@@ -15,7 +15,6 @@ import {
     SLAError,
 } from '../types/sla.types';
 
-// Interfaces para os parâmetros das rotas
 interface SLAParams {
     systemId: string;
 }
@@ -131,8 +130,6 @@ export class SLAController {
             const { systemId } = request.params;
             const updateData = request.body;
 
-            // Converter UpdateSLAConfigRequest para CreateSLAConfigRequest
-            // mantendo os valores existentes se não fornecidos
             const existingSLA =
                 await this.slaService.getSLABySystemId(systemId);
             if (!existingSLA) {
@@ -243,7 +240,7 @@ export class SLAController {
                 month: parsedMonth,
                 year: year ? parseInt(year, 10) : undefined,
                 systemIds: systemIds
-                    ? systemIds.split(',').filter((id) => id.trim())
+                    ? systemIds.split(',').filter((id: string) => id.trim())
                     : undefined,
             };
 
@@ -312,8 +309,6 @@ export class SLAController {
                     return;
             }
         }
-
-        // Erro genérico
         reply.status(500).send({
             success: false,
             message: 'Erro interno do servidor',
@@ -321,7 +316,4 @@ export class SLAController {
         });
     }
 
-    async cleanup(): Promise<void> {
-        await this.slaService.disconnect();
-    }
 }

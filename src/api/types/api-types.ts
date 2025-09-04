@@ -24,7 +24,7 @@ export interface SystemWithApi extends System {
 
 export interface ApiCheckResult {
     success: boolean;
-    statusCode?: number;
+    statusCode: number;
     responseTime: number;
     payload?: any;
     error?: string;

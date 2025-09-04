@@ -31,7 +31,7 @@ export class SLAService {
                 slaConfigs.map(async (config) => {
                     const currentMetrics =
                         await this.slaRepository.calculateCurrentSLA(
-                            config.systemId,
+                            config.system.id,
                             currentMonth,
                         );
 
@@ -42,9 +42,9 @@ export class SLAService {
                         systemHost: config.system.host,
                         systemStatus: config.system.status,
                         uptimeTarget: config.uptimeTarget,
-                        maxDowntime: config.maxDowntime,
-                        responseTimeTarget: config.responseTimeTarget,
-                        monitoringWindow: config.monitoringWindow,
+                        maxDowntime: config.maxDowntime ?? undefined,
+                        responseTimeTarget: config.responseTimeTarget ?? undefined,
+                        monitoringWindow: config.monitoringWindow ?? undefined,
                         currentUptime: currentMetrics.uptimePercentage,
                         status: this.getSLAStatus(
                             config.uptimeTarget,
@@ -103,9 +103,9 @@ export class SLAService {
                 systemHost: slaConfig.system.host,
                 systemStatus: slaConfig.system.status,
                 uptimeTarget: slaConfig.uptimeTarget,
-                maxDowntime: slaConfig.maxDowntime,
-                responseTimeTarget: slaConfig.responseTimeTarget,
-                monitoringWindow: slaConfig.monitoringWindow,
+                maxDowntime: slaConfig.maxDowntime ?? undefined,
+                responseTimeTarget: slaConfig.responseTimeTarget ?? undefined,
+                monitoringWindow: slaConfig.monitoringWindow ?? undefined,
                 currentUptime: currentMetrics.uptimePercentage,
                 status: this.getSLAStatus(
                     slaConfig.uptimeTarget,
@@ -170,9 +170,9 @@ export class SLAService {
                 systemHost: slaConfig.system.host,
                 systemStatus: slaConfig.system.status,
                 uptimeTarget: slaConfig.uptimeTarget,
-                maxDowntime: slaConfig.maxDowntime,
-                responseTimeTarget: slaConfig.responseTimeTarget,
-                monitoringWindow: slaConfig.monitoringWindow,
+                maxDowntime: slaConfig.maxDowntime ?? undefined,
+                responseTimeTarget: slaConfig.responseTimeTarget ?? undefined,
+                monitoringWindow: slaConfig.monitoringWindow ?? undefined,
                 currentUptime: currentMetrics.uptimePercentage,
                 status: this.getSLAStatus(
                     slaConfig.uptimeTarget,
@@ -294,34 +294,32 @@ export class SLAService {
             const sortedByUptime = [...reports].sort(
                 (a, b) => a.uptimePct - b.uptimePct,
             );
-
-            const worstPerformer: SystemPerformance | null =
-                sortedByUptime.length > 0
-                    ? {
-                          systemId: sortedByUptime[0].systemId,
-                          systemName: sortedByUptime[0].system.name,
-                          uptimePercentage: sortedByUptime[0].uptimePct,
-                          downtime: sortedByUptime[0].downtime,
-                      }
-                    : null;
+const firstReport = sortedByUptime[0];
+const worstPerformer: SystemPerformance | null =
+    sortedByUptime.length > 0 && firstReport?.system
+        ? {
+              systemId: firstReport.systemId,
+              systemName: firstReport.system.name,
+              uptimePercentage: firstReport.uptimePct,
+              downtime: firstReport.downtime,
+          }
+        : null;
 
             const bestPerformer: SystemPerformance | null =
-                sortedByUptime.length > 0
-                    ? {
-                          systemId:
-                              sortedByUptime[sortedByUptime.length - 1]
-                                  .systemId,
-                          systemName:
-                              sortedByUptime[sortedByUptime.length - 1].system
-                                  .name,
-                          uptimePercentage:
-                              sortedByUptime[sortedByUptime.length - 1]
-                                  .uptimePct,
-                          downtime:
-                              sortedByUptime[sortedByUptime.length - 1]
-                                  .downtime,
-                      }
-                    : null;
+    sortedByUptime.length > 0
+        ? (() => {
+              const lastIndex = sortedByUptime.length - 1;
+              const bestReport = sortedByUptime[lastIndex];
+              return bestReport && bestReport.system
+                  ? {
+                        systemId: bestReport.systemId,
+                        systemName: bestReport.system.name,
+                        uptimePercentage: bestReport.uptimePct,
+                        downtime: bestReport.downtime,
+                    }
+                  : null;
+          })()
+        : null;
 
             const reportItems: SLAReportItem[] = reports.map((report) => ({
                 id: report.id,
@@ -426,9 +424,5 @@ export class SLAService {
         error.code = code;
         error.details = details;
         return error;
-    }
-
-    async disconnect(): Promise<void> {
-        await this.slaRepository.disconnect();
     }
 }

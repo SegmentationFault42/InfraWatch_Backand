@@ -119,7 +119,7 @@ class UserService {
             throw new Error('Utilizador não encontrado');
         }
 
-        if (user.roleId === 'ADMIN') {
+        if (user.role === 'ADMIN') {
             throw new Error('Utilizadores admin não podem ser eliminados');
         }
         return await userRepository.delete(id);
