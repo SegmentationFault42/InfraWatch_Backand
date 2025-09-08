@@ -1,6 +1,4 @@
 .env
-<<<<<<< HEAD
 /src/generated/prisma
-=======
 node_modules
->>>>>>> origin
+

@@ -1,4 +1,3 @@
-// src/services/dashboard.service.ts
 import { DashboardRepository } from '../repositories/dashboard.repository';
 import {
   DashboardOverview,
@@ -71,14 +70,13 @@ export class DashboardService {
     try {
       let systems = await this.dashboardRepository.getSystemsWithMetrics();
 
-      // Filtrar por sistemas específicos se solicitado
+     
       if (query.systemIds && query.systemIds.length > 0) {
         systems = systems.filter(system => 
           query.systemIds!.includes(system.id)
         );
       }
 
-      // Ordenar por status (críticos primeiro)
       systems.sort((a, b) => {
         const statusOrder = { 'down': 0, 'warning': 1, 'up': 2, 'unknown': 3 };
         const aOrder = statusOrder[a.status as keyof typeof statusOrder] ?? 3;
@@ -145,7 +143,6 @@ export class DashboardService {
     }
   }
 
-  // Métodos auxiliares para análise
   async getSystemsHealthScore(): Promise<number> {
     try {
       const systems = await this.dashboardRepository.getSystemsWithMetrics();
@@ -172,7 +169,7 @@ export class DashboardService {
         system.status === 'down' || system.statusTrend === 'down'
       ).length;
     } catch (error) {
-      return 0; // Em caso de erro, assumir 0 sistemas críticos
+      return 0;
     }
   }
 
@@ -183,9 +180,8 @@ export class DashboardService {
       
       if (systemsWithMetrics.length === 0) return null;
 
-      // Como não temos response time direto nas métricas atuais,
-      // podemos implementar isso quando tivermos dados de API metrics
-      return null; // Placeholder
+     
+      return null; 
     } catch (error) {
       return null;
     }

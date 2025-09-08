@@ -1,8 +1,8 @@
 // src/types/webhook-types.ts
 export interface WebhookConfig {
-    webhookUrl: string; // URL única para receber dados
-    secret?: string; // Para validação de autenticidade
-    expectedFields?: string[]; // Campos obrigatórios no payload
+    webhookUrl: string; 
+    secret?: string; 
+    expectedFields?: string[]; 
 }
 
 export interface WebhookMonitor {
@@ -37,8 +37,8 @@ export interface SystemWithWebhook {
 export interface WebhookMetrics {
     time: Date;
     systemId: string;
-    status?: number; // 1=up, 0=down, 2=warning, -1=unknown
+    status?: number;
     message?: string;
     source?: string;
-    eventType: string; // 'status_change', 'alert', 'info', etc.
+    eventType: string; 
 }

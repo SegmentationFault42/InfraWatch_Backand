@@ -1,5 +1,3 @@
-// src/repositories/ping-repository.ts
-
 import { prisma, timeseries } from '../../config/database';
 import type {
     SystemWithPing,

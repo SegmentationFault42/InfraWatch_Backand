@@ -1,12 +1,11 @@
-// jobs/snmp-worker.ts
 import { Worker } from 'bullmq';
-import IORedis from 'ioredis';
 import { snmpservice } from '../api/services/snmp-service';
 
-const connection = new IORedis({
+const connection = {
     host: process.env.REDIS_HOST || 'localhost',
     port: +(process.env.REDIS_PORT || 6379),
-});
+    maxRetriesPerRequest: null,
+};
 
 const worker = new Worker(
     'snmp-monitor',

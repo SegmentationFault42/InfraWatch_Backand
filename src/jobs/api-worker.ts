@@ -1,12 +1,12 @@
 import { Worker } from 'bullmq';
 
-import IORedis from 'ioredis';
 import { apiMonitoring } from '../api-monitoring/api-monitoring';
 
-const connection = new IORedis({
+const connection = {
     host: process.env.REDIS_HOST || 'localhost',
     port: +(process.env.REDIS_PORT || 6379),
-});
+    maxRetriesPerRequest: null,
+};
 
 export const apiWorker = new Worker(
     'api-monitor',
@@ -27,9 +27,6 @@ export const apiWorker = new Worker(
 );
 
 apiWorker.on('completed', (job) => {
-    console.log(
-        `[ApiWorker] Job ${job.id} completado para sistema ${job.data.systemId}`,
-    );
 });
 
 apiWorker.on('failed', (job, err) => {

@@ -1,4 +1,3 @@
-// src/services/ping-service.ts
 import { pingRepository } from '../repositories/pingRepository';
 import type {
     SystemWithPing,

@@ -5,6 +5,9 @@ import { Swagger } from './config/swagger.config';
 import fastifyCookie from '@fastify/cookie';
 import { auditLogPlugin } from './api/middleware/AuditLogMiddleware';
 import { initMonitoring } from './jobs/monitoring-init';
+import './jobs/monitoring-init';
+import './jobs/api-worker';   // 👈 garante que o worker está ativo
+import { apiQueue } from './jobs/queue-redis';
 
 export const app = fastify({ logger: false });
 
@@ -16,6 +19,7 @@ app.register(import('@fastify/rate-limit'), {
     timeWindow: '1 minute',
 });
 initMonitoring();
+
 app.register(fastifyCookie, {
     secret: ENV.COOKIE_SECRET,
     hook: 'onRequest',

@@ -13,21 +13,21 @@ export async function dashboardRoutes(
   
 
  
-  fastify.get('/overview', dashboardController.getOverview.bind(dashboardController));
+  fastify.get('/dashboard/overview', dashboardController.getOverview.bind(dashboardController));
 
   
-  fastify.get('/systems-status', dashboardController.getSystemsStatus.bind(dashboardController));
+  fastify.get('/dashboard/systems-status', dashboardController.getSystemsStatus.bind(dashboardController));
 
 
-  fastify.get('/sla-priority', 
+  fastify.get('/dashboard/sla-priority', 
    dashboardController.getSLAPriority.bind(dashboardController));
 
 
-  fastify.get('/incidents-stats', dashboardController.getIncidentsStats.bind(dashboardController));
+  fastify.get('/dashboard/incidents-stats', dashboardController.getIncidentsStats.bind(dashboardController));
 
 
-  fastify.get('/', dashboardController.getCompleteDashboard.bind(dashboardController));
+  fastify.get('/dashboard/', dashboardController.getCompleteDashboard.bind(dashboardController));
 
 
-  fastify.get('/health', dashboardController.getHealthScore.bind(dashboardController));
+  fastify.get('/dashboard/health', dashboardController.getHealthScore.bind(dashboardController));
 }

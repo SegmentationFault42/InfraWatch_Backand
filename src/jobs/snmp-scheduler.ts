@@ -1,4 +1,3 @@
-// jobs/scheduler.ts
 import { snmpQueue } from './queue-redis';
 import type { SystemWithSnmp } from '../api/types/snmp-types';
 

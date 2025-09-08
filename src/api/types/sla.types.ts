@@ -1,7 +1,5 @@
-// src/types/sla.types.ts
 import { System, SLAConfig, SlaReport } from '@prisma/client';
 
-// Tipos base do Prisma estendidos
 export interface SystemWithSLA extends System {
     SLAConfig: SLAConfig[];
 }
@@ -14,7 +12,6 @@ export interface SlaReportWithSystem extends SlaReport {
     system: System;
 }
 
-// Tipos de entrada para as APIs
 export interface CreateSLAConfigRequest {
     uptimeTarget: number;
     maxDowntime?: number;
@@ -29,7 +26,6 @@ export interface UpdateSLAConfigRequest {
     monitoringWindow?: string;
 }
 
-// Tipos para métricas calculadas
 export interface SLAMetrics {
     totalChecks: number;
     successfulChecks: number;
@@ -40,7 +36,6 @@ export interface SLAMetrics {
     lastCheckTime?: Date;
 }
 
-// Tipos de resposta para APIs
 export interface SLAOverview {
     id: string;
     systemId: string;
@@ -107,7 +102,6 @@ export interface SystemPerformance {
     downtime: number;
 }
 
-// Query types
 export interface SLAHistoryQuery {
     systemId: string;
     limit?: number;
@@ -121,7 +115,7 @@ export interface MonthlySLAReportQuery {
     systemIds?: string[];
 }
 
-// Response types
+
 export interface SLAListResponse {
     success: boolean;
     data: SLAOverview[];
@@ -158,7 +152,6 @@ export interface SLAConfigResponse {
     message?: string;
 }
 
-// Enums
 export enum SLAStatus {
     COMPLIANT = 'compliant',
     AT_RISK = 'at_risk',
@@ -175,7 +168,7 @@ export enum SLAErrorCode {
     DATABASE_ERROR = 'DATABASE_ERROR',
 }
 
-// Utility types
+
 export interface SLACalculationPeriod {
     start: Date;
     end: Date;

@@ -1,4 +1,3 @@
-// src/monitors/ping-monitor.ts
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import { PingConfig, PingResult } from '../api/types/ping-types';
@@ -51,7 +50,7 @@ export class PingMonitor {
         packetLoss: number;
     }> {
         const isWindows = process.platform === 'win32';
-
+        console.log("Executando PING   ")
         let command: string;
         if (isWindows) {
             command = `ping -n ${this.config.retries} -l ${this.config.packetSize} -w ${this.config.timeout} ${this.config.host}`;

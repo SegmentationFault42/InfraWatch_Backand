@@ -1,4 +1,3 @@
-// src/types/ping-types.ts
 export interface PingConfig {
     host: string;
     timeout: number;
@@ -40,5 +39,5 @@ export interface PingMetrics {
     host: string;
     responseTime: number;
     packetLoss: number;
-    status: number; // 1=up, 0=down, 2=warning, -1=unknown
+    status: number; 
 }

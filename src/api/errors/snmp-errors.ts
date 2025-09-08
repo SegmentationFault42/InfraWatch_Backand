@@ -6,7 +6,7 @@ export class SnmpError extends Error {
         this.name = 'SnmpError';
         this.code = code;
 
-        // Manter stack trace
+        
         if (Error.captureStackTrace) {
             Error.captureStackTrace(this, SnmpError);
         }

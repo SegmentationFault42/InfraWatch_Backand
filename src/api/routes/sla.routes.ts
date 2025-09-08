@@ -13,7 +13,7 @@ export async function slaRoutes(
 
  
     fastify.get(
-        '/',
+        '/sla/',
         
            
         slaController.getAllSLAs.bind(slaController),
@@ -21,21 +21,21 @@ export async function slaRoutes(
 
     
     fastify.get(
-        '/:systemId',
+        '/sla/:systemId',
      
         slaController.getSLABySystemId.bind(slaController),
     );
 
    
     fastify.put(
-        '/:systemId',
+        '/sla/:systemId',
       
         slaController.configureSLA.bind(slaController),
     );
 
     
     fastify.patch(
-        '/:systemId',
+        '/sla/:systemId',
        
         slaController.updateSLA.bind(slaController),
     );

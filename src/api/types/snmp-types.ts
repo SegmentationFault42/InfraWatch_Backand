@@ -9,7 +9,7 @@ export interface SnmpConfig {
 }
 
 export interface SnmpResult {
-    status: 'up' | 'down' | 'warning' | 'unknown'; // ✅ Adicionar 'unknown'
+    status: 'up' | 'down' | 'warning' | 'unknown'; 
     timestamp: Date;
     responseTime: number;
     values: Record<string, any>;
@@ -59,7 +59,6 @@ export interface SnmpDashboard {
     >;
 }
 
-// Tipos auxiliares para SNMP
 export interface SnmpSystemInfo {
     sysDescr?: string;
     sysObjectID?: string;

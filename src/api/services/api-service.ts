@@ -52,6 +52,7 @@ class ApiService {
                 responseTime,
                 error: error.message || 'Erro desconhecido na requisição API',
                 timestamp: new Date(),
+                statusCode: 404,
             };
         }
     }
@@ -95,7 +96,7 @@ class ApiService {
             await apiRepository.updateSystemStatus(systemId, newStatus);
 
             console.log(
-                `[ApiService] Sistema ${systemId}: ${newStatus} (${result.responseTime}ms)`,
+                `[ApiService] Sistema ${system.name}: ${newStatus} (${result.responseTime}ms)`,
             );
             return result;
         } catch (error: any) {

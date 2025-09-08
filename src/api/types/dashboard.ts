@@ -1,14 +1,10 @@
-// src/types/dashboard.types.ts
-import { System, alerts } from '@prisma/client';
-
-// Tipos para os cards principais
 export interface DashboardOverview {
   systemsActive: {
     total: number;
     active: number;
     inactive: number;
     warning: number;
-    trend: number; // percentual de mudança
+    trend: number;
   };
   alerts: {
     total: number;
@@ -24,8 +20,6 @@ export interface DashboardOverview {
     trend: number;
   };
 }
-
-// Sistema com métricas atuais
 export interface SystemWithMetrics {
   id: string;
   name: string;
@@ -38,8 +32,6 @@ export interface SystemWithMetrics {
   statusTrend: 'up' | 'down' | 'stable';
   lastUpdate?: Date;
 }
-
-// SLA por nível de prioridade
 export interface SLAPriorityStats {
   alta: {
     count: number;
@@ -55,7 +47,7 @@ export interface SLAPriorityStats {
   };
 }
 
-// Estatísticas de incidentes
+
 export interface IncidentsStats {
   resolved: number;
   normal: number;
@@ -64,7 +56,6 @@ export interface IncidentsStats {
   currentMonth: string;
 }
 
-// Dados completos do dashboard
 export interface DashboardData {
   overview: DashboardOverview;
   systemsStatus: SystemWithMetrics[];
@@ -73,7 +64,7 @@ export interface DashboardData {
   lastUpdated: Date;
 }
 
-// Respostas da API
+
 export interface DashboardOverviewResponse {
   success: boolean;
   data: DashboardOverview;
@@ -100,21 +91,18 @@ export interface IncidentsStatsResponse {
   data: IncidentsStats;
 }
 
-// Queries e filtros
 export interface DashboardQuery {
   period?: 'daily' | 'weekly' | 'monthly';
   systemIds?: string[];
   includeMetrics?: boolean;
 }
 
-// Métricas temporais para cálculo de trends
 export interface TrendData {
   current: number;
   previous: number;
   percentageChange: number;
 }
 
-// Erros específicos do dashboard
 export enum DashboardErrorCode {
   INSUFFICIENT_DATA = 'INSUFFICIENT_DATA',
   CALCULATION_ERROR = 'CALCULATION_ERROR',

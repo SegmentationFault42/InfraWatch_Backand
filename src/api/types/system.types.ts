@@ -1,4 +1,3 @@
-// types/system.types.ts - Arquivo separado para tipos
 import { MonitorType } from '@prisma/client';
 
 export interface MonitorInput {
@@ -22,7 +21,6 @@ export interface CreateSystemInput {
     slaConfig?: SLAConfigInput;
 }
 
-// Alternativa: Se ainda houver problemas, use esta versão mais explícita
 export interface CreateSystemInputStrict {
     name: string;
     host: string;

@@ -1,11 +1,11 @@
 import { Worker } from 'bullmq';
-import IORedis from 'ioredis';
 import { pingService } from '../api/services/ping-service';
 
-const connection = new IORedis({
+const connection = {
     host: process.env.REDIS_HOST || 'localhost',
     port: +(process.env.REDIS_PORT || 6379),
-});
+    maxRetriesPerRequest: null,
+};
 
 const worker = new Worker(
     'ping-monitor',

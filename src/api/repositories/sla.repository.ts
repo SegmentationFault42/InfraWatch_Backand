@@ -1,8 +1,5 @@
 import prisma from '../../config/database';
 import { timeseries } from '../../config/database';
-import { pingResult } from '../../ping/ping.config';
-import { ApiCheckResult } from '../types/api-types';
-import { PingMetrics } from '../types/ping-types';
 import {
     CreateSLAConfigRequest,
     SLAMetrics,

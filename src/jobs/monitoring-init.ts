@@ -1,7 +1,5 @@
-// monitoring-init.ts
 import { scheduleAllSnmpSystems } from './snmp-scheduler';
 import { snmprepository } from '../api/repositories/snmp-repository';
-import prisma, { timeseries } from '../config/database';
 import { pingRepository } from '../api/repositories/pingRepository';
 import { scheduleAllPingSystems } from './ping-scheduler';
 import { apiRepository } from '../api/repositories/api-repository';
